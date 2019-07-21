@@ -1,22 +1,13 @@
 ﻿using Org.BouncyCastle.Ocsp;
-using SecureGovernment.Domain.Interfaces;
 using SecureGovernment.Domain.Models.Ocsp;
-using SecureGovernment.Domain.Models.Workers;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace SecureGovernment.Domain.Services.Workers
+namespace SecureGovernment.Domain.DnsRecords.Workers
 {
-    public class OcspWorker : IAsyncWorker
+    public class OcspWorker
     {
-        public Task<WorkerResult> RunAsync(WorkerInformation workerInformation)
-        {
-            throw new NotImplementedException();
-        }
 
         private async Task<BasicOcspResp> GetOcspStatus(Ocsp ocsp)
         {

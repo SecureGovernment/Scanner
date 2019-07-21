@@ -2,8 +2,8 @@
 using DnsClient.Protocol;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using SecureGovernment.Domain.Models.Workers;
-using SecureGovernment.Domain.Services.Workers;
+using SecureGovernment.Domain.Models.DnsRecords.Results;
+using SecureGovernment.Domain.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -24,16 +24,14 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
             var lookupClientMock = new Mock<ILookupClient>(MockBehavior.Strict);
             lookupClientMock.Setup(x => x.QueryAsync(workerInformation.Hostname, QueryType.CAA, QueryClass.IN, default)).Returns(Task.FromResult(dnsResponse.Object));
 
-            var service = new CaaWorker() { LookupClient = lookupClientMock.Object };
+            var service = new DnsScannerService() { LookupClient = lookupClientMock.Object };
 
             // Act
-            var rawCaaRecords = service.RunAsync(workerInformation);
+            var rawCaaRecords = service.ScanCaaAsync(workerInformation);
             rawCaaRecords.Wait();
 
             // Assert
-            Assert.IsInstanceOfType(rawCaaRecords.Result, typeof(CaaWorkerResult));
-
-            var caaRecords = rawCaaRecords.Result as CaaWorkerResult;
+            var caaRecords = rawCaaRecords.Result;
             Assert.IsFalse(caaRecords.HasCaaRecords);
             Assert.AreEqual(0, caaRecords.IssueCas.Count);
             Assert.AreEqual(0, caaRecords.IssueWildCas.Count);
@@ -59,16 +57,14 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
             var lookupClientMock = new Mock<ILookupClient>(MockBehavior.Strict);
             lookupClientMock.Setup(x => x.QueryAsync(workerInformation.Hostname, QueryType.CAA, QueryClass.IN, default)).Returns(Task.FromResult(dnsResponse.Object));
 
-            var service = new CaaWorker() { LookupClient = lookupClientMock.Object };
+            var service = new DnsScannerService() { LookupClient = lookupClientMock.Object };
 
             // Act
-            var rawCaaRecords = service.RunAsync(workerInformation);
+            var rawCaaRecords = service.ScanCaaAsync(workerInformation);
             rawCaaRecords.Wait();
 
             // Assert
-            Assert.IsInstanceOfType(rawCaaRecords.Result, typeof(CaaWorkerResult));
-
-            var caaRecords = rawCaaRecords.Result as CaaWorkerResult;
+            var caaRecords = rawCaaRecords.Result;
             Assert.IsTrue(caaRecords.HasCaaRecords);
             Assert.AreEqual(2, caaRecords.IssueCas.Count);
             Assert.AreEqual("letsencrypt.org", caaRecords.IssueCas[0]);

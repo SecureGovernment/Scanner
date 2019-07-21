@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SecureGovernment.Domain.Services.Workers
+namespace SecureGovernment.Domain.DnsRecords.Workers
 {
     class CrlWorker
     {

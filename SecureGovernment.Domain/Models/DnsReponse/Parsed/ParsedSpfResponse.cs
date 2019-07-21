@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace SecureGovernment.Domain.Models.Workers
+namespace SecureGovernment.Domain.Models.DnsReponse.Parsed
 {
-    public class SpfWorkerResult : WorkerResult
+    public class ParsedSpfResponse
     {
         public List<string> OldSpfRecords { get; set; }
         public bool HasOldSpf => this.OldSpfRecords.Any();

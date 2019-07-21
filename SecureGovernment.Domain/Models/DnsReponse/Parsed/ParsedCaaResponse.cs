@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 
-namespace SecureGovernment.Domain.Models.Workers
+namespace SecureGovernment.Domain.Models.DnsReponse.Parsed
 {
-    public class CaaWorkerResult : WorkerResult
+    public class ParsedCaaResponse
     {
         public bool HasCaaRecords => this.IssueCas.Count > 0 || this.IssueWildCas.Count > 0;
         public List<string> IssueCas { get; set; }
         public List<string> IssueWildCas { get; set; }
         public List<string> Iodef { get; set; }
 
-        public CaaWorkerResult()
+        public ParsedCaaResponse()
         {
             this.IssueCas = new List<string>();
             this.IssueWildCas = new List<string>();
