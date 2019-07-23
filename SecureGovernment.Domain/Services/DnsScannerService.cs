@@ -1,14 +1,14 @@
 ﻿using DnsClient;
-using SecureGovernment.Domain.DnsRecords.Workers;
 using SecureGovernment.Domain.DnsResponse;
+using SecureGovernment.Domain.Interfaces.Services;
 using SecureGovernment.Domain.Models.DnsRecords.Results;
+using SecureGovernment.Domain.Models.DnsReponse;
 using SecureGovernment.Domain.Models.DnsReponse.Parsed;
-using System;
 using System.Threading.Tasks;
 
 namespace SecureGovernment.Domain.Services
 {
-    public class DnsScannerService
+    public class DnsScannerService : IDnsScannerService
     {
         public ILookupClient LookupClient { get; set; }
 
@@ -42,6 +42,14 @@ namespace SecureGovernment.Domain.Services
             var caa = new CaaReponse(dnsReponse);
 
             return caa.ParseReponse();
+        }
+
+        public async Task<ParsedMxResponse> ScanMxAsync(WorkerInformation workerInformation)
+        {
+            var dnsReponse = await LookupClient.QueryAsync(workerInformation.Hostname, QueryType.MX);
+            var mx = new MxResponse(dnsReponse);
+
+            return mx.ParseReponse();
         }
     }
 }

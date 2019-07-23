@@ -1,6 +1,8 @@
 ﻿using Autofac;
+using DnsClient;
 using Serilog;
 using System;
+using System.Net;
 using System.Reflection;
 
 namespace SecureGovernment
@@ -17,6 +19,7 @@ namespace SecureGovernment
 
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly(), Assembly.Load("SecureGovernment.Domain"))
                    .AsImplementedInterfaces().PropertiesAutowired();
+            builder.RegisterInstance(new LookupClient(IPAddress.Parse("8.8.8.8"), 53)).As<ILookupClient>();
             builder.RegisterInstance(logger).As<ILogger>();
 
             var container = builder.Build();

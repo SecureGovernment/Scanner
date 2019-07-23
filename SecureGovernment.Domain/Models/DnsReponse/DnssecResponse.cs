@@ -14,11 +14,11 @@ namespace SecureGovernment.Domain.DnsResponse
 
         public ParsedDnssecResponse ParseReponse()
         {
-            var hasRrsigRecords = this._Reponse.Answers.Any();
+            var rrsigRecords = this._Reponse.Answers.Select(x => x.ToString()).ToList();
 
             return new ParsedDnssecResponse()
             {
-                HasDnssec = hasRrsigRecords
+                Records = rrsigRecords
             };
         }
     }

@@ -2,7 +2,7 @@
 
 namespace SecureGovernment.Domain.Models.DnsReponse.Parsed
 {
-    public class ParsedCaaResponse
+    public class ParsedCaaResponse : ParsedDnsReponse
     {
         public bool HasCaaRecords => this.IssueCas.Count > 0 || this.IssueWildCas.Count > 0;
         public List<string> IssueCas { get; set; }

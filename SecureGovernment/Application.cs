@@ -1,4 +1,7 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
+using SecureGovernment.Domain.Interfaces.Facades;
+using SecureGovernment.Domain.Interfaces.Services;
+using SecureGovernment.Domain.Models.DnsRecords.Results;
 using Serilog;
 using System;
 
@@ -11,6 +14,7 @@ namespace SecureGovernment
     public class Application : IApplication
     {
         public ILogger Logger { get; set; }
+        public IScannerFacade ScannerFacade { get; set; }
 
         public void Run(string[] args)
         {
@@ -25,6 +29,18 @@ namespace SecureGovernment
             app.OnExecute(() =>
             {
                 app.ShowHelp();
+            });
+
+            app.Command("scan", (command) =>
+            {
+                command.Description = "Starts a scan";
+
+                command.OnExecute(() =>
+                {
+                    var result = ScannerFacade.ScanDns(new WorkerInformation() { Hostname = "whitehouse.gov" });
+                    result.Wait();
+                    var dnsResult = result.Result;
+                });
             });
 
             try

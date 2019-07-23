@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace SecureGovernment.Domain.Models.DnsReponse.Parsed
 {
-    public class ParsedDmarcResponse
+    public class ParsedDmarcResponse : ParsedDnsReponse
     {
-        public List<string> Records { get; set; }
+        public bool HasDmarcRecords => this.Records.Any();
     }
 }
