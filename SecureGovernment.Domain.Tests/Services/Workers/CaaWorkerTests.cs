@@ -2,8 +2,13 @@
 using DnsClient.Protocol;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using SecureGovernment.Domain.Interfaces;
+using SecureGovernment.Domain.Models;
 using SecureGovernment.Domain.Models.DnsRecords.Results;
+using SecureGovernment.Domain.Models.DnsReponse.Parsed;
+using SecureGovernment.Domain.Workers;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SecureGovernment.Domain.Tests.Services.Workers
@@ -11,66 +16,76 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
     [TestClass]
     public class CaaWorkerTests
     {
-        //[TestMethod]
-        //public void Test_CaaWorker_RunAsync_NoRecords()
-        //{
-        //    // Arrange
-        //    var workerInformation = new WorkerInformation() { Hostname = "http://www.google.com" };
+        [TestMethod]
+        public void Test_CaaWorker_RunAsync_NoRecords()
+        {
+            // Arrange
+            var workerInformation = new WorkerInformation() { Hostname = "http://www.google.com" };
 
-        //    var dnsResponse = new Mock<IDnsQueryResponse>();
-        //    dnsResponse.Setup(x => x.Answers).Returns(new List<DnsResourceRecord>());
+            var dnsResponse = new Mock<IDnsQueryResponse>();
+            dnsResponse.Setup(x => x.Answers).Returns(new List<DnsResourceRecord>());
 
-        //    var lookupClientMock = new Mock<ILookupClient>(MockBehavior.Strict);
-        //    lookupClientMock.Setup(x => x.QueryAsync(workerInformation.Hostname, QueryType.CAA, QueryClass.IN, default)).Returns(Task.FromResult(dnsResponse.Object));
+            var lookupClientMock = new Mock<ILookupClient>(MockBehavior.Strict);
+            lookupClientMock.Setup(x => x.QueryAsync(workerInformation.Hostname, QueryType.CAA, QueryClass.IN, default)).Returns(Task.FromResult(dnsResponse.Object));
+            var previousWorkerMock = new Mock<IAsyncWorker>(MockBehavior.Strict);
+            previousWorkerMock.Setup(x => x.Scan(workerInformation)).Returns(Task.FromResult(new List<ScanResult>()));
 
-        //    var service = new DnsScannerService() { LookupClient = lookupClientMock.Object };
+            var service = new CaaWorker(previousWorkerMock.Object, lookupClientMock.Object);
 
-        //    // Act
-        //    var rawCaaRecords = service.ScanCaaAsync(workerInformation);
-        //    rawCaaRecords.Wait();
+            // Act
+            var rawCaaRecords = service.Scan(workerInformation);
+            rawCaaRecords.Wait();
 
-        //    // Assert
-        //    var caaRecords = rawCaaRecords.Result;
-        //    Assert.IsFalse(caaRecords.HasCaaRecords);
-        //    Assert.AreEqual(0, caaRecords.IssueCas.Count);
-        //    Assert.AreEqual(0, caaRecords.IssueWildCas.Count);
-        //}
+            // Assert
+            var records = rawCaaRecords.Result;
+            Assert.IsInstanceOfType(records.Single(), typeof(ParsedCaaResponse));
+            var caaRecord = records.Single() as ParsedCaaResponse;
 
-        //[TestMethod]
-        //public void Test_CaaWorker_RunAsync_Records()
-        //{
-        //    // Arrange
-        //    var workerInformation = new WorkerInformation() { Hostname = "http://www.google.com" };
-        //    var resourceRecord = new ResourceRecordInfo(DnsString.FromResponseQueryString(workerInformation.Hostname), ResourceRecordType.CAA, QueryClass.IN, 0, 0);
+            Assert.IsFalse(caaRecord.HasCaaRecords);
+            Assert.AreEqual(0, caaRecord.IssueCas.Count);
+            Assert.AreEqual(0, caaRecord.IssueWildCas.Count);
+        }
 
-        //    var dnsRecords = new List<DnsResourceRecord>() {
-        //        new CaaRecord(resourceRecord, 0, "issuewild", "pki.googl"),
-        //        new CaaRecord(resourceRecord, 0, "issue", "letsencrypt.org"),
-        //        new CaaRecord(resourceRecord, 0, "issuewild", "sslcerts.com"),
-        //        new CaaRecord(resourceRecord, 0, "issue", "freecerts.com"),
-        //    };
+        [TestMethod]
+        public void Test_CaaWorker_RunAsync_Records()
+        {
+            // Arrange
+            var workerInformation = new WorkerInformation() { Hostname = "http://www.google.com" };
+            var resourceRecord = new ResourceRecordInfo(DnsString.FromResponseQueryString(workerInformation.Hostname), ResourceRecordType.CAA, QueryClass.IN, 0, 0);
 
-        //    var dnsResponse = new Mock<IDnsQueryResponse>();
-        //    dnsResponse.Setup(x => x.Answers).Returns(dnsRecords);
+            var dnsRecords = new List<DnsResourceRecord>() {
+                new CaaRecord(resourceRecord, 0, "issuewild", "pki.googl"),
+                new CaaRecord(resourceRecord, 0, "issue", "letsencrypt.org"),
+                new CaaRecord(resourceRecord, 0, "issuewild", "sslcerts.com"),
+                new CaaRecord(resourceRecord, 0, "issue", "freecerts.com"),
+            };
 
-        //    var lookupClientMock = new Mock<ILookupClient>(MockBehavior.Strict);
-        //    lookupClientMock.Setup(x => x.QueryAsync(workerInformation.Hostname, QueryType.CAA, QueryClass.IN, default)).Returns(Task.FromResult(dnsResponse.Object));
+            var dnsResponse = new Mock<IDnsQueryResponse>();
+            dnsResponse.Setup(x => x.Answers).Returns(dnsRecords);
 
-        //    var service = new DnsScannerService() { LookupClient = lookupClientMock.Object };
+            var lookupClientMock = new Mock<ILookupClient>(MockBehavior.Strict);
+            lookupClientMock.Setup(x => x.QueryAsync(workerInformation.Hostname, QueryType.CAA, QueryClass.IN, default)).Returns(Task.FromResult(dnsResponse.Object));
+            var previousWorkerMock = new Mock<IAsyncWorker>(MockBehavior.Strict);
+            previousWorkerMock.Setup(x => x.Scan(workerInformation)).Returns(Task.FromResult(new List<ScanResult>()));
 
-        //    // Act
-        //    var rawCaaRecords = service.ScanCaaAsync(workerInformation);
-        //    rawCaaRecords.Wait();
+            var service = new CaaWorker(previousWorkerMock.Object, lookupClientMock.Object);
 
-        //    // Assert
-        //    var caaRecords = rawCaaRecords.Result;
-        //    Assert.IsTrue(caaRecords.HasCaaRecords);
-        //    Assert.AreEqual(2, caaRecords.IssueCas.Count);
-        //    Assert.AreEqual("letsencrypt.org", caaRecords.IssueCas[0]);
-        //    Assert.AreEqual("freecerts.com", caaRecords.IssueCas[1]);
-        //    Assert.AreEqual(2, caaRecords.IssueWildCas.Count);
-        //    Assert.AreEqual("pki.googl", caaRecords.IssueWildCas[0]);
-        //    Assert.AreEqual("sslcerts.com", caaRecords.IssueWildCas[1]);
-        //}
+            // Act
+            var rawCaaRecords = service.Scan(workerInformation);
+            rawCaaRecords.Wait();
+
+            // Assert
+            var records = rawCaaRecords.Result;
+            Assert.IsInstanceOfType(records.Single(), typeof(ParsedCaaResponse));
+            var caaRecord = records.Single() as ParsedCaaResponse;
+
+            Assert.IsTrue(caaRecord.HasCaaRecords);
+            Assert.AreEqual(2, caaRecord.IssueCas.Count);
+            Assert.AreEqual("letsencrypt.org", caaRecord.IssueCas[0]);
+            Assert.AreEqual("freecerts.com", caaRecord.IssueCas[1]);
+            Assert.AreEqual(2, caaRecord.IssueWildCas.Count);
+            Assert.AreEqual("pki.googl", caaRecord.IssueWildCas[0]);
+            Assert.AreEqual("sslcerts.com", caaRecord.IssueWildCas[1]);
+        }
     }
 }
