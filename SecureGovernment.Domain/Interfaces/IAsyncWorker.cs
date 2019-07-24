@@ -3,10 +3,10 @@ using SecureGovernment.Domain.Models.DnsRecords.Results;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SecureGovernment.Domain.Interfaces.Facades
+namespace SecureGovernment.Domain.Interfaces
 {
-    public interface IScannerFacade
+    public interface IAsyncWorker
     {
-        Task<List<ScanResult>> ScanDns(WorkerInformation workerInformation);
+        Task<List<ScanResult>> Scan(WorkerInformation workerInformation);
     }
 }
