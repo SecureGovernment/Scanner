@@ -6,13 +6,13 @@ using SecureGovernment.Domain.Models.DnsRecords.Results;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SecureGovernment.Domain.Workers
+namespace SecureGovernment.Domain.Workers.Dns
 {
-    public class DmarcWorker : IAsyncWorker
+    public class SpfWorker : IAsyncWorker
     {
         private ILookupClient _LookupClient { get; }
         private IAsyncWorker _PreviousWorker { get; }
-        public DmarcWorker(IAsyncWorker previousWorker, ILookupClient lookupClient)
+        public SpfWorker(IAsyncWorker previousWorker, ILookupClient lookupClient)
         {
             this._PreviousWorker = previousWorker;
             this._LookupClient = lookupClient;
@@ -20,10 +20,10 @@ namespace SecureGovernment.Domain.Workers
 
         public async Task<List<ScanResult>> Scan(WorkerInformation workerInformation)
         {
-            var dnsReponse = await _LookupClient.QueryAsync($"_dmarc.{workerInformation.Hostname}", QueryType.TXT);
-            var dmarc = new DmarcResponse(dnsReponse);
+            var dnsReponse = await _LookupClient.QueryAsync(workerInformation.Hostname, QueryType.TXT);
+            var spf = new SpfResponse(dnsReponse);
             var previousResults = await this._PreviousWorker.Scan(workerInformation);
-            previousResults.Add(dmarc.ParseReponse());
+            previousResults.Add(spf.ParseReponse());
 
             return previousResults;
         }

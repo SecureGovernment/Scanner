@@ -4,6 +4,7 @@ using SecureGovernment.Domain.Interfaces.Services;
 using SecureGovernment.Domain.Models;
 using SecureGovernment.Domain.Models.DnsRecords.Results;
 using SecureGovernment.Domain.Workers;
+using SecureGovernment.Domain.Workers.Dns;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

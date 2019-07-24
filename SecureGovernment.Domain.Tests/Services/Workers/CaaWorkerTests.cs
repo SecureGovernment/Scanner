@@ -6,7 +6,7 @@ using SecureGovernment.Domain.Interfaces;
 using SecureGovernment.Domain.Models;
 using SecureGovernment.Domain.Models.DnsRecords.Results;
 using SecureGovernment.Domain.Models.DnsReponse.Parsed;
-using SecureGovernment.Domain.Workers;
+using SecureGovernment.Domain.Workers.Dns;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
