@@ -20,7 +20,7 @@ namespace SecureGovernment.Domain.Models
         private X509Certificate2 Certificate { get; set; }
         private X509Chain Chain { get; set; }
 
-        public (X509Certificate2 Certificate, X509Chain Chain) LoadCertificates()
+        public virtual (X509Certificate2 Certificate, X509Chain Chain) LoadCertificates()
         {
             using (TcpClient tcpClient = new TcpClient(this._Url, 443))
             using (SslStream sslStream = new SslStream(tcpClient.GetStream(), true, CertificateValidationCallBack))
