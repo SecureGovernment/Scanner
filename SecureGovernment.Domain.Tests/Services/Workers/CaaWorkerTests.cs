@@ -17,7 +17,7 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
     public class CaaWorkerTests
     {
         [TestMethod]
-        public void Test_CaaWorker_RunAsync_NoRecords()
+        public void Test_CaaWorker_Scan_NoRecords()
         {
             // Arrange
             var workerInformation = new WorkerInformation() { Hostname = "http://www.google.com" };
@@ -47,7 +47,7 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
         }
 
         [TestMethod]
-        public void Test_CaaWorker_RunAsync_Records()
+        public void Test_CaaWorker_Scan_Records()
         {
             // Arrange
             var workerInformation = new WorkerInformation() { Hostname = "http://www.google.com" };
