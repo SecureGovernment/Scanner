@@ -26,7 +26,7 @@ namespace SecureGovernment.Domain.Facades
                 var info = connection.LoadCertificates();
                 workerInformation.Certificate = info.Certificate;
                 workerInformation.Chain = info.Chain;
-            } catch (SocketException _){ } //TODO: Log failure
+            } catch (SocketException) { } //TODO: Log failure
 
             return workerInformation;
         }
