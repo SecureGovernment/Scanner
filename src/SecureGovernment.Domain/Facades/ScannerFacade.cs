@@ -1,6 +1,5 @@
 ﻿using DnsClient;
 using SecureGovernment.Domain.Interfaces.Facades;
-using SecureGovernment.Domain.Interfaces.Services;
 using SecureGovernment.Domain.Models;
 using SecureGovernment.Domain.Models.DnsRecords.Results;
 using SecureGovernment.Domain.Workers;
@@ -13,7 +12,6 @@ namespace SecureGovernment.Domain.Facades
 {
     public class ScannerFacade : IScannerFacade
     {
-        public IDnsScannerService DnsScannerService { get; set; }
         public ILookupClient LookupClient { get; set; }
 
         public WorkerInformation ConnectToTarget(string url)
