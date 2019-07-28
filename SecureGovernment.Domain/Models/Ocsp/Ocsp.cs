@@ -38,7 +38,7 @@ namespace SecureGovernment.Domain.Models.Ocsp
             return gen.Generate();
         }
 
-        public IList<Uri> GetOcspUris()
+        public virtual IList<Uri> GetOcspUris()
         {
             List<Uri> ocspUris;
             try

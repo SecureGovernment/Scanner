@@ -1,10 +1,12 @@
-﻿using SecureGovernment.Domain.Interfaces.Facades;
+﻿using DnsClient;
+using SecureGovernment.Domain.Interfaces.Facades;
 using SecureGovernment.Domain.Interfaces.Services;
+using SecureGovernment.Domain.Models;
 using SecureGovernment.Domain.Models.DnsRecords.Results;
-using SecureGovernment.Domain.Models.DnsReponse.Parsed;
-using System;
+using SecureGovernment.Domain.Workers;
+using SecureGovernment.Domain.Workers.Dns;
 using System.Collections.Generic;
-using System.Text;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 
 namespace SecureGovernment.Domain.Facades
@@ -12,17 +14,40 @@ namespace SecureGovernment.Domain.Facades
     public class ScannerFacade : IScannerFacade
     {
         public IDnsScannerService DnsScannerService { get; set; }
-        public async Task<List<ParsedDnsReponse>> ScanDns(WorkerInformation workerInformation)
-        {
-            var dnsResponses = new List<ParsedDnsReponse>() {
-                await DnsScannerService.ScanCaaAsync(workerInformation),
-                await DnsScannerService.ScanDmarcAsync(workerInformation),
-                await DnsScannerService.ScanDnssecAsync(workerInformation),
-                await DnsScannerService.ScanSpfAsync(workerInformation),
-                await DnsScannerService.ScanMxAsync(workerInformation)
-            };
+        public ILookupClient LookupClient { get; set; }
 
-            return dnsResponses;
+        public WorkerInformation ConnectToTarget(string url)
+        {
+            Connection connection = CreateConnection(url);
+            var workerInformation = new WorkerInformation() { Hostname = url };
+
+            try
+            {
+                var info = connection.LoadCertificates();
+                workerInformation.Certificate = info.Certificate;
+                workerInformation.Chain = info.Chain;
+            } catch (SocketException _){ } //TODO: Log failure
+
+            return workerInformation;
+        }
+
+        public async Task<List<ScanResult>> ScanDns(WorkerInformation workerInformation)
+        {
+            var baseWorker = new BaseWorker();
+            var mxWorker = new MxWorker(baseWorker, this.LookupClient);
+            var caaWorker = new CaaWorker(mxWorker, this.LookupClient);
+            var spfWorker = new SpfWorker(caaWorker, this.LookupClient);
+            var dnssecWorker = new DnssecWorker(spfWorker, this.LookupClient);
+            var dmarcWorker = new DmarcWorker(dnssecWorker, this.LookupClient);
+
+            var scanResults = await dmarcWorker.Scan(workerInformation);
+
+            return scanResults;
+        }
+
+        public virtual Connection CreateConnection(string url)
+        {
+            return new Connection(url);
         }
     }
 }
