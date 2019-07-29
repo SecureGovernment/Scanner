@@ -18,12 +18,9 @@ namespace SecureGovernment.Domain.Models
             this._Chain = chain;
         }
 
-        public List<EndCertificate> GetCertificatePaths(List<X509Certificate2> cas)
+        public EndCertificate GetCertificateMap(List<X509Certificate2> cas)
         {
-            var paths = new List<EndCertificate>
-            {
-                new EndCertificate() { Certificate = this._Certificate, Next = null }
-            };
+            var endCertificate = new EndCertificate() { Certificate = this._Certificate };
 
             var chainCertificatesWithoutEndCert = GetChainCertificates();
 
@@ -32,21 +29,45 @@ namespace SecureGovernment.Domain.Models
                 //Remove the end certificate
                 chainCertificatesWithoutEndCert.RemoveAt(0);
                 var intermediates = chainCertificatesWithoutEndCert.Where(x => !cas.Any(y => y.SerialNumber == x.SerialNumber));
-    
-                var intermediateChain = new EndCertificate() { Certificate = this._Certificate, Next = null };
-                ChainLink previousLink = intermediateChain;
+                var roots = chainCertificatesWithoutEndCert.Where(x => cas.Any(y => y.SerialNumber == x.SerialNumber));
+
+                ChainLink previousLink = endCertificate;
                 foreach (var intermediate in intermediates)
                 {
-                    previousLink.Next = new IntermediateCertificate() { Certificate = intermediate, Next = null, Previous = previousLink };
-                    previousLink = previousLink.Next;
+                    var intermediateLink = new IntermediateCertificate() { Certificate = intermediate };
+                    intermediateLink.AddPrevious(previousLink);
+                    previousLink = previousLink.Next.Single();
                 }
-    
-                if(intermediateChain.Next != null)
-                    paths.Add(intermediateChain);
-    
+
+                foreach (var root in roots)
+                {
+                    var newRootCertificate = new RootCertificate() { Certificate = root };
+                    newRootCertificate.AddPrevious(previousLink);
+                    //previousLink.Next.Add(RecurseRootCertificate(newRootCertificate, cas));
+                }
+   
             }
 
-            return paths;
+            return endCertificate;
+        }
+
+        private ChainLink RecurseRootCertificate(ChainLink currentLink, List<X509Certificate2> cas)
+        {
+
+            foreach (var ca in cas)
+            {
+                var chain = new X509Chain(false);
+                chain.ChainPolicy.ExtraStore.Add(ca);
+                var path = chain.Build(currentLink.Certificate);
+
+                if (path)
+                {
+                    var newRootCert = new RootCertificate() { Certificate = ca };
+                    newRootCert.AddPrevious(RecurseRootCertificate(newRootCert, cas));
+                }
+            }
+
+            return currentLink;
         }
 
         private List<X509Certificate2> GetChainCertificates()
