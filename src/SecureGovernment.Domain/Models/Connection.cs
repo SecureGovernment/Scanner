@@ -32,8 +32,12 @@ namespace SecureGovernment.Domain.Models
 
         private bool CertificateValidationCallBack(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
-            Chain = chain;
-            Certificate = new X509Certificate2(certificate);
+            var newChain = new X509Chain(false);
+            var newCert = new X509Certificate2(certificate);
+            newChain.Build(newCert);
+
+            Chain = newChain;
+            Certificate = newCert;
 
             return true;
         }
