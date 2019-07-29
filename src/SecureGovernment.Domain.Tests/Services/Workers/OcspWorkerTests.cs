@@ -22,8 +22,8 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
             // Arrange
             var certificate = CreationHelper.CreateCertificate();
             var bcCertificate = CreationHelper.CreateBCCertificate();
-            var issuer = CreationHelper.CreateIssuer();
-            var bcIssuer = CreationHelper.CreateBCIssuer();
+            var issuer = CreationHelper.CreateIntermediate();
+            var bcIssuer = CreationHelper.CreateBCIntermediate();
             var uri = new Uri("https://google.com");
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(uri);
             var ocspResponse = new OcspResponse() { Status = 0 };
@@ -57,8 +57,8 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
             // Arrange
             var certificate = CreationHelper.CreateCertificate();
             var bcCertificate = CreationHelper.CreateBCCertificate();
-            var issuer = CreationHelper.CreateIssuer();
-            var bcIssuer = CreationHelper.CreateBCIssuer();
+            var issuer = CreationHelper.CreateIntermediate();
+            var bcIssuer = CreationHelper.CreateBCIntermediate();
             var uri = new Uri("https://google.com");
             var bingUri = new Uri("https://bing.com");
             HttpWebRequest bingWebRequest = (HttpWebRequest)WebRequest.Create(bingUri);
@@ -96,8 +96,8 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
             // Arrange
             var certificate = CreationHelper.CreateCertificate();
             var bcCertificate = CreationHelper.CreateBCCertificate();
-            var issuer = CreationHelper.CreateIssuer();
-            var bcIssuer = CreationHelper.CreateBCIssuer();
+            var issuer = CreationHelper.CreateIntermediate();
+            var bcIssuer = CreationHelper.CreateBCIntermediate();
             var uri = new Uri("https://google.com");
             var bingUri = new Uri("https://bing.com");
             HttpWebRequest bingWebRequest = (HttpWebRequest)WebRequest.Create(bingUri);
@@ -134,8 +134,8 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
             // Arrange
             var certificate = CreationHelper.CreateCertificate();
             var bcCertificate = CreationHelper.CreateBCCertificate();
-            var issuer = CreationHelper.CreateIssuer();
-            var bcIssuer = CreationHelper.CreateBCIssuer();
+            var issuer = CreationHelper.CreateIntermediate();
+            var bcIssuer = CreationHelper.CreateBCIntermediate();
 
             var workerInformation = MockWorkerInformation(hostname: "google.com", certificate: certificate, issuer: issuer);
             var ocsp = MockOcsp(certificate: bcCertificate, issuer: bcIssuer, ocspUris: new Uri[0]);
