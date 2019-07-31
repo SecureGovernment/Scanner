@@ -71,6 +71,26 @@ namespace SecureGovernment.Domain.Tests.Models
             AssertChainLink(paths.Next.Single().Next.Single(), root, null, intermediateCertificate);
         }
 
+        [TestMethod]
+        public void Test2()
+        {
+            var connection = new Connection("ouboces.org");
+            var connectionCertificates = connection.LoadCertificates();
+            var certAnalysis = new CertificateAnalysis(connectionCertificates.Certificate, connectionCertificates.Chain);
+            var trustStore = new Truststore("Microsoft", @"C:\Users\Alex\Documents\Repositories\Scanner\catt\data\mozilla\snapshot");
+            var trustStore1 = new Truststore("Microsoft", @"C:\Users\Alex\Documents\Repositories\Scanner\catt\data\adobe\snapshot");
+            var trustStore2 = new Truststore("Microsoft", @"C:\Users\Alex\Documents\Repositories\Scanner\catt\data\apple\snapshot");
+            var trustStor3 = new Truststore("Microsoft", @"C:\Users\Alex\Documents\Repositories\Scanner\catt\data\microsoft");
+
+            var cas = trustStore.Certificates;
+            cas.AddRange(trustStore1.Certificates);
+            cas.AddRange(trustStore2.Certificates);
+            cas.AddRange(trustStor3.Certificates);
+
+            var map = certAnalysis.GetCertificateMap(cas);
+            var x = 1;
+        }
+
         private void AssertChainLink(ChainLink link, X509Certificate2 certificate, X509Certificate2 next, X509Certificate2 previous)
         {
             Assert.AreEqual(certificate, link.Certificate);

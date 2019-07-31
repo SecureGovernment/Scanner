@@ -39,10 +39,14 @@ namespace SecureGovernment.Domain.Models
             builderParams.AddStore(X509StoreFactory.Create(
                 "Certificate/Collection", intermediateStoreParameters));
 
-            PkixCertPathBuilderResult result = builder.Build(builderParams);
-
-            return true;
-
+            try
+            {
+                PkixCertPathBuilderResult result = builder.Build(builderParams);
+                return true;
+            } catch
+            {
+                return false;
+            }
         }
     }
 }
