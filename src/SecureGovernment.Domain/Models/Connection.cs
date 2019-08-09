@@ -1,11 +1,6 @@
-﻿using Org.BouncyCastle.Security;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Net.Security;
+﻿using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
 
 namespace SecureGovernment.Domain.Models
 {
@@ -18,9 +13,9 @@ namespace SecureGovernment.Domain.Models
             this._Url = url;
         }
         private X509Certificate2 Certificate { get; set; }
-        private X509Chain Chain { get; set; }
+        private Chain Chain { get; set; }
 
-        public virtual (X509Certificate2 Certificate, X509Chain Chain) LoadCertificates()
+        public virtual (X509Certificate2 Certificate, Chain Chain) LoadCertificates()
         {
             using (TcpClient tcpClient = new TcpClient(this._Url, 443))
             using (SslStream sslStream = new SslStream(tcpClient.GetStream(), true, CertificateValidationCallBack))
@@ -36,7 +31,7 @@ namespace SecureGovernment.Domain.Models
             var newCert = new X509Certificate2(certificate);
             newChain.Build(newCert);
 
-            Chain = newChain;
+            Chain = new Chain(newChain);
             Certificate = newCert;
 
             return true;

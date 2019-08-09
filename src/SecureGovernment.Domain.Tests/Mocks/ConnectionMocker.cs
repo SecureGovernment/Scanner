@@ -6,7 +6,7 @@ namespace SecureGovernment.Domain.Tests.Mocks
 {
     public static class ConnectionMocker
     {
-        public static Connection MockConnection(string url = "", (X509Certificate2, X509Chain)? loadCertificate = null, bool throwLoadCertificateException = false)
+        public static Connection MockConnection(string url = "", (X509Certificate2, Chain)? loadCertificate = null, bool throwLoadCertificateException = false)
         {
             var connection = Mocker.CreateMock<Connection>(url);
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using SecureGovernment.Domain.Facades;
+using SecureGovernment.Domain.Models;
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
 using static SecureGovernment.Domain.Tests.Mocks.ConnectionMocker;
@@ -17,7 +18,7 @@ namespace SecureGovernment.Domain.Tests.Facades
             var url = "google.com";
             var facadeMock = new Mock<ScannerFacade>() { CallBase = true };
             var cert = new X509Certificate2();
-            var chain = new X509Chain();
+            var chain = new Chain(new X509Chain());
             facadeMock.Setup(x => x.CreateConnection(url)).Returns(MockConnection(url: url, loadCertificate: (cert, chain)));
 
             var facade = facadeMock.Object;
