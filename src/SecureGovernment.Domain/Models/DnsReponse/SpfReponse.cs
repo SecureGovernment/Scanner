@@ -1,5 +1,6 @@
 ﻿using DnsClient;
 using SecureGovernment.Domain.Models.DnsReponse.Parsed;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SecureGovernment.Domain.DnsResponse
@@ -20,7 +21,8 @@ namespace SecureGovernment.Domain.DnsResponse
             var spfRecords = txtRecords.SelectMany(x => x.Text).Where(x => x.ToLower().Contains("spf")).ToList();
 
             return new ParsedSpfResponse() {
-                Records = spfRecords
+                Records = spfRecords,
+                OldSpfRecords = new List<string>() //TODO: Add support for old SPF records
             };
         }
     }

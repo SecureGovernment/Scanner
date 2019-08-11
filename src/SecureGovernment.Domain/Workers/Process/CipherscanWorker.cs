@@ -1,10 +1,10 @@
 ﻿using SecureGovernment.Domain.Interfaces;
+using SecureGovernment.Domain.Interfaces.Infastructure;
 using SecureGovernment.Domain.Models;
 using SecureGovernment.Domain.Models.DnsRecords.Results;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace SecureGovernment.Domain.Workers.Process
@@ -13,11 +13,13 @@ namespace SecureGovernment.Domain.Workers.Process
     {
         private string _CipherscanPath { get; }
         private IAsyncWorker _PreviousWorker { get; }
+        private IFileSystem _FileSystem { get; set; }
         public string _Output { get; set; }
 
-        public CipherscanWorker(IAsyncWorker previousWorker, string cipherscanPath)
+        public CipherscanWorker(IAsyncWorker previousWorker, IFileSystem fileSystem, string cipherscanPath)
         {
             this._PreviousWorker = previousWorker;
+            this._FileSystem = fileSystem;
             this._CipherscanPath = cipherscanPath;
         }
 
@@ -25,7 +27,7 @@ namespace SecureGovernment.Domain.Workers.Process
         {
             var previousResults = await this._PreviousWorker.Scan(workerInformation);
 
-            if (!File.Exists(this._CipherscanPath))
+            if (!this._FileSystem.Exists(this._CipherscanPath))
                 return previousResults;
 
             var process = new System.Diagnostics.Process()

@@ -1,6 +1,6 @@
 ﻿namespace SecureGovernment.Domain.Models
 {
-    public class ScanResult
+    public abstract class ScanResult
     {
 
     }
