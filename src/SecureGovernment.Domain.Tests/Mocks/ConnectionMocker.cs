@@ -1,5 +1,4 @@
 ﻿using SecureGovernment.Domain.Models;
-using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
 
 namespace SecureGovernment.Domain.Tests.Mocks
@@ -10,10 +9,10 @@ namespace SecureGovernment.Domain.Tests.Mocks
         {
             var connection = Mocker.CreateMock<Connection>(url);
 
-            if (loadCertificate.HasValue && !throwLoadCertificateException)
-                connection.Setup(x => x.LoadCertificates()).Returns(loadCertificate.Value);
-            if (throwLoadCertificateException)
-                connection.Setup(x => x.LoadCertificates()).Throws(new SocketException());
+            //if (loadCertificate.HasValue && !throwLoadCertificateException)
+            //    connection.Setup(x => x.LoadCertificates()).Returns(loadCertificate.Value);
+            //if (throwLoadCertificateException)
+            //    connection.Setup(x => x.LoadCertificates()).Throws(new SocketException());
 
             return connection.Object;
         }

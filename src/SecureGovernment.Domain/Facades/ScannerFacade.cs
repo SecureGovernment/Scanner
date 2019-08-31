@@ -19,12 +19,12 @@ namespace SecureGovernment.Domain.Facades
             Connection connection = CreateConnection(url);
             var workerInformation = new WorkerInformation() { Hostname = url };
 
-            try
-            {
-                var info = connection.LoadCertificates();
-                workerInformation.Certificate = info.Certificate;
-                workerInformation.Chain = info.Chain;
-            } catch (SocketException) { } //TODO: Log failure
+            //try
+            //{
+            //    var info = connection.LoadCertificates();
+            //    workerInformation.Certificate = info.Certificate;
+            //    workerInformation.Chain = info.Chain;
+            //} catch (SocketException) { } //TODO: Log failure
 
             return workerInformation;
         }
