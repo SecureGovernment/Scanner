@@ -64,11 +64,13 @@ namespace SecureGovernment.Domain.Models
 
         public virtual async Task<Uri> ConnectToUri(Uri uri)
         {
-            var restClient = new RestClient() { BaseUrl = uri, Timeout = 15000 };
-            var request = new RestRequest(uri);
+            var restClient = CreateRestClient(uri);
+            var request = CreateRestRequest(uri);
             var response = await restClient.ExecuteGetTaskAsync<RestRequest>(request);
             return (int)response.StatusCode >= 200 && (int)response.StatusCode < 300 ? response.ResponseUri : null;
         }
+
+        #region - Private Helpers -
 
         private bool CertificateValidationCallBack(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
@@ -81,5 +83,15 @@ namespace SecureGovernment.Domain.Models
 
             return true;
         }
+
+        #endregion
+
+        #region - Model Creations -
+
+        public virtual IRestRequest CreateRestRequest(Uri uri) => new RestRequest(uri);
+
+        public virtual IRestClient CreateRestClient(Uri uri) => new RestClient() { BaseUrl = uri, Timeout = 15000 };
+
+        #endregion
     }
 }

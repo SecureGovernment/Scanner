@@ -15,7 +15,7 @@ namespace SecureGovernment.Domain.Tests.Services
         public void Test_TruststoreService_GetTruststores_NoTruststores()
         {
             // Arrange
-            var settings = new Mock<ISettings>();
+            var settings = Utils.CreateMockOfSelf<ISettings>();
             settings.Setup(x => x.Truststores).Returns(new List<TruststoreSetting>());
 
             var service = new TruststoreService() { Settings = settings.Object };
@@ -37,7 +37,7 @@ namespace SecureGovernment.Domain.Tests.Services
                 new TruststoreSetting(){ Name = "Store 2", Directory = "../" },
             };
 
-            var settings = new Mock<ISettings>();
+            var settings = Utils.CreateMockOfSelf<ISettings>();
             settings.Setup(x => x.Truststores).Returns(truststoreSettings);
 
             var service = new TruststoreService() { Settings = settings.Object };
@@ -62,7 +62,7 @@ namespace SecureGovernment.Domain.Tests.Services
                 new TruststoreSetting(){ Name = "Store 3", Directory = "../" },
             };
 
-            var settings = new Mock<ISettings>();
+            var settings = Utils.CreateMockOfSelf<ISettings>();
             settings.Setup(x => x.Truststores).Returns(truststoreSettings);
 
             var service = new TruststoreService() { Settings = settings.Object };

@@ -31,10 +31,10 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
             var workerInformation = MockWorkerInformation(hostname: "google.com", certificate: certificate, issuer: issuer);
             var ocsp = MockOcsp(certificate: bcCertificate, issuer: bcIssuer, ocspUris: new[] { uri, new Uri("https://shouldneverhapp.en") });
 
-            var previousWorker = new Mock<IAsyncWorker>();
+            var previousWorker = Utils.CreateMock<IAsyncWorker>();
             previousWorker.Setup(x => x.Scan(workerInformation)).ReturnsAsync(new List<ScanResult>());
 
-            var workerMock = new Mock<OcspWorker>(previousWorker.Object) { CallBase = true };
+            var workerMock = Utils.CreateMockOfSelf<OcspWorker>(previousWorker.Object);
             workerMock.Setup(x => x.CreateOcsp(bcCertificate, bcIssuer)).Returns(ocsp);
             workerMock.Setup(x => x.CreateOcspRequest(ocsp, uri)).Returns(webRequest);
             workerMock.Setup(x => x.SendOcspRequest(webRequest)).ReturnsAsync(ocspResponse);
@@ -68,10 +68,10 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
             var workerInformation = MockWorkerInformation(hostname: "google.com", certificate: certificate, issuer: issuer);
             var ocsp = MockOcsp(certificate: bcCertificate, issuer: bcIssuer, ocspUris: new[] { uri, bingUri });
 
-            var previousWorker = new Mock<IAsyncWorker>();
+            var previousWorker = Utils.CreateMock<IAsyncWorker>();
             previousWorker.Setup(x => x.Scan(workerInformation)).ReturnsAsync(new List<ScanResult>());
 
-            var workerMock = new Mock<OcspWorker>(previousWorker.Object) { CallBase = true };
+            var workerMock = Utils.CreateMockOfSelf<OcspWorker>(previousWorker.Object);
             workerMock.Setup(x => x.CreateOcsp(bcCertificate, bcIssuer)).Returns(ocsp);
             workerMock.Setup(x => x.CreateOcspRequest(ocsp, uri)).Returns(webRequest);
             workerMock.Setup(x => x.CreateOcspRequest(ocsp, bingUri)).Returns(bingWebRequest);
@@ -106,10 +106,10 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
             var workerInformation = MockWorkerInformation(hostname: "google.com", certificate: certificate, issuer: issuer);
             var ocsp = MockOcsp(certificate: bcCertificate, issuer: bcIssuer, ocspUris: new[] { uri, bingUri });
 
-            var previousWorker = new Mock<IAsyncWorker>();
+            var previousWorker = Utils.CreateMock<IAsyncWorker>();
             previousWorker.Setup(x => x.Scan(workerInformation)).ReturnsAsync(new List<ScanResult>());
 
-            var workerMock = new Mock<OcspWorker>(previousWorker.Object) { CallBase = true };
+            var workerMock = Utils.CreateMockOfSelf<OcspWorker>(previousWorker.Object);
             workerMock.Setup(x => x.CreateOcsp(bcCertificate, bcIssuer)).Returns(ocsp);
             workerMock.Setup(x => x.CreateOcspRequest(ocsp, uri)).Returns(webRequest);
             workerMock.Setup(x => x.CreateOcspRequest(ocsp, bingUri)).Returns(bingWebRequest);
@@ -140,10 +140,10 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
             var workerInformation = MockWorkerInformation(hostname: "google.com", certificate: certificate, issuer: issuer);
             var ocsp = MockOcsp(certificate: bcCertificate, issuer: bcIssuer, ocspUris: new Uri[0]);
 
-            var previousWorker = new Mock<IAsyncWorker>();
+            var previousWorker = Utils.CreateMock<IAsyncWorker>();
             previousWorker.Setup(x => x.Scan(workerInformation)).ReturnsAsync(new List<ScanResult>());
 
-            var workerMock = new Mock<OcspWorker>(previousWorker.Object) { CallBase = true };
+            var workerMock = Utils.CreateMockOfSelf<OcspWorker>(previousWorker.Object);
             workerMock.Setup(x => x.CreateOcsp(bcCertificate, bcIssuer)).Returns(ocsp);
 
             // Act

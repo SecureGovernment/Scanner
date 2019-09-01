@@ -22,12 +22,12 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
             // Arrange
             var workerInformation = new WorkerInformation() { Hostname = "http://www.google.com" };
 
-            var dnsResponse = new Mock<IDnsQueryResponse>();
+            var dnsResponse = Utils.CreateMock<IDnsQueryResponse>();
             dnsResponse.Setup(x => x.Answers).Returns(new List<DnsResourceRecord>());
 
-            var lookupClientMock = new Mock<ILookupClient>(MockBehavior.Strict);
+            var lookupClientMock = Utils.CreateMock<ILookupClient>();
             lookupClientMock.Setup(x => x.QueryAsync(workerInformation.Hostname, QueryType.TXT, QueryClass.IN, default)).Returns(Task.FromResult(dnsResponse.Object));
-            var previousWorkerMock = new Mock<IAsyncWorker>(MockBehavior.Strict);
+            var previousWorkerMock = Utils.CreateMock<IAsyncWorker>();
             previousWorkerMock.Setup(x => x.Scan(workerInformation)).Returns(Task.FromResult(new List<ScanResult>()));
 
             var service = new SpfWorker(previousWorkerMock.Object, lookupClientMock.Object);
@@ -59,12 +59,12 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
                 new TxtRecord(resourceRecord, txtRecords, txtRecords)
             };
 
-            var dnsResponse = new Mock<IDnsQueryResponse>();
+            var dnsResponse = Utils.CreateMock<IDnsQueryResponse>();
             dnsResponse.Setup(x => x.Answers).Returns(dnsRecords);
 
-            var lookupClientMock = new Mock<ILookupClient>(MockBehavior.Strict);
+            var lookupClientMock = Utils.CreateMock<ILookupClient>();
             lookupClientMock.Setup(x => x.QueryAsync(workerInformation.Hostname, QueryType.TXT, QueryClass.IN, default)).Returns(Task.FromResult(dnsResponse.Object));
-            var previousWorkerMock = new Mock<IAsyncWorker>(MockBehavior.Strict);
+            var previousWorkerMock = Utils.CreateMock<IAsyncWorker>();
             previousWorkerMock.Setup(x => x.Scan(workerInformation)).Returns(Task.FromResult(new List<ScanResult>()));
 
             var service = new SpfWorker(previousWorkerMock.Object, lookupClientMock.Object);
@@ -96,12 +96,12 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
                 new TxtRecord(resourceRecord, txtRecords, txtRecords)
             };
 
-            var dnsResponse = new Mock<IDnsQueryResponse>();
+            var dnsResponse = Utils.CreateMock<IDnsQueryResponse>();
             dnsResponse.Setup(x => x.Answers).Returns(dnsRecords);
 
-            var lookupClientMock = new Mock<ILookupClient>(MockBehavior.Strict);
+            var lookupClientMock = Utils.CreateMock<ILookupClient>();
             lookupClientMock.Setup(x => x.QueryAsync(workerInformation.Hostname, QueryType.TXT, QueryClass.IN, default)).Returns(Task.FromResult(dnsResponse.Object));
-            var previousWorkerMock = new Mock<IAsyncWorker>(MockBehavior.Strict);
+            var previousWorkerMock = Utils.CreateMock<IAsyncWorker>();
             previousWorkerMock.Setup(x => x.Scan(workerInformation)).Returns(Task.FromResult(new List<ScanResult>()));
 
             var service = new SpfWorker(previousWorkerMock.Object, lookupClientMock.Object);
