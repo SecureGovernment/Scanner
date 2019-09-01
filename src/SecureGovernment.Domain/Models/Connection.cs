@@ -37,7 +37,7 @@ namespace SecureGovernment.Domain.Models
             return new EndPointInformation() { IPAddress = ip, Certificate = this.Certificate, Chain = this.Chain };
         }
 
-        public async Task<WorkerInformation> Connect()
+        public virtual async Task<WorkerInformation> Connect()
         {
             var uris = new List<Uri>() { new Uri($"https://{this._Url}"), new Uri($"https://www.{this._Url}"), new Uri($"http://{this._Url}"), new Uri($"http://www.{this._Url}") };
             Uri resolvedUri = null;
@@ -62,7 +62,7 @@ namespace SecureGovernment.Domain.Models
             return workerInformation;
         }
 
-        public async Task<Uri> ConnectToUri(Uri uri)
+        public virtual async Task<Uri> ConnectToUri(Uri uri)
         {
             var restClient = new RestClient() { BaseUrl = uri, Timeout = 15000 };
             var request = new RestRequest(uri);

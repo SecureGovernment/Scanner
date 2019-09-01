@@ -1,7 +1,5 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
 using SecureGovernment.Domain.Interfaces.Facades;
-using SecureGovernment.Domain.Interfaces.Services;
-using SecureGovernment.Domain.Models.DnsRecords.Results;
 using Serilog;
 using System;
 
@@ -37,7 +35,7 @@ namespace SecureGovernment
 
                 command.OnExecute(() =>
                 {
-                    var result = ScannerFacade.ScanDns(new WorkerInformation() { Hostname = "whitehouse.gov" });
+                    var result = ScannerFacade.Scan("radcliff.org");
                     result.Wait();
                     var dnsResult = result.Result;
                 });

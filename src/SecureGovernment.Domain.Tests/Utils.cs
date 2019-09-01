@@ -4,9 +4,9 @@ namespace SecureGovernment.Domain.Tests
 {
     public sealed class Utils
     {
-        public static Mock<T> CreateMock<T>() where T : class
+        public static Mock<T> CreateMock<T>(params object[] args) where T : class
         {
-            return new Mock<T>(MockBehavior.Strict);
+            return new Mock<T>(MockBehavior.Strict, args) { CallBase = true };
         }
     }
 }

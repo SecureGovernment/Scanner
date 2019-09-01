@@ -14,17 +14,18 @@ namespace SecureGovernment.Domain.Facades
     {
         public ILookupClient LookupClient { get; set; }
 
-        public WorkerInformation ConnectToTarget(string url)
+        public async Task<List<ScanResult>> Scan(string url)
+        {
+            var workerInfo = await ConnectToTarget(url);
+            var dns = await ScanDns(workerInfo);
+
+            return dns;
+        }
+
+        public async Task<WorkerInformation> ConnectToTarget(string url)
         {
             Connection connection = CreateConnection(url);
-            var workerInformation = new WorkerInformation() { Hostname = url };
-
-            //try
-            //{
-            //    var info = connection.LoadCertificates();
-            //    workerInformation.Certificate = info.Certificate;
-            //    workerInformation.Chain = info.Chain;
-            //} catch (SocketException) { } //TODO: Log failure
+            var workerInformation = await connection.Connect();
 
             return workerInformation;
         }

@@ -1,18 +1,17 @@
-﻿using SecureGovernment.Domain.Models;
-using System.Security.Cryptography.X509Certificates;
+﻿using Moq;
+using SecureGovernment.Domain.Models;
+using SecureGovernment.Domain.Models.DnsRecords.Results;
 
 namespace SecureGovernment.Domain.Tests.Mocks
 {
     public static class ConnectionMocker
     {
-        public static Connection MockConnection(string url = "", (X509Certificate2, Chain)? loadCertificate = null, bool throwLoadCertificateException = false)
+        public static Connection MockConnection(string url = "", WorkerInformation workerInformation = null)
         {
             var connection = Mocker.CreateMock<Connection>(url);
 
-            //if (loadCertificate.HasValue && !throwLoadCertificateException)
-            //    connection.Setup(x => x.LoadCertificates()).Returns(loadCertificate.Value);
-            //if (throwLoadCertificateException)
-            //    connection.Setup(x => x.LoadCertificates()).Throws(new SocketException());
+            if (workerInformation != null)
+                connection.Setup(x => x.Connect()).ReturnsAsync(workerInformation);
 
             return connection.Object;
         }
