@@ -1,8 +1,8 @@
-﻿using SecureGovernment.Domain.Interfaces;
+﻿using Newtonsoft.Json;
+using SecureGovernment.Domain.Interfaces;
 using SecureGovernment.Domain.Interfaces.Infastructure;
 using SecureGovernment.Domain.Models;
 using SecureGovernment.Domain.Models.DnsRecords.Results;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -14,7 +14,7 @@ namespace SecureGovernment.Domain.Workers.Process
         private string _CipherscanPath { get; }
         private IAsyncWorker _PreviousWorker { get; }
         private IFileSystem _FileSystem { get; set; }
-        public string _Output { get; set; }
+        private CipherscanResult _Result { get; set; }
 
         public CipherscanWorker(IAsyncWorker previousWorker, IFileSystem fileSystem, string cipherscanPath)
         {
@@ -35,7 +35,7 @@ namespace SecureGovernment.Domain.Workers.Process
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = this._CipherscanPath,
-                    Arguments = $"--no-tolerance -j --curves -servername {workerInformation.Hostname}",
+                    Arguments = $"--no-tolerance -j --curves -servername {workerInformation.Hostname} {workerInformation.IPAddress}:443",
                     UseShellExecute = true,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
@@ -50,14 +50,14 @@ namespace SecureGovernment.Domain.Workers.Process
             // 3 minute timeout
             process.WaitForExit(180000);
 
+            previousResults.Add(_Result);
             return previousResults;
 
         }
 
-        private static void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
+        private void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
         {
-            //* Do your stuff with the output (write to console/log/StringBuilder)
-            Console.WriteLine(outLine.Data);
+            _Result = JsonConvert.DeserializeObject<CipherscanResult>(outLine.Data);
         }
     }
 }
