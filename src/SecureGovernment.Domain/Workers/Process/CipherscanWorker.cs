@@ -36,7 +36,7 @@ namespace SecureGovernment.Domain.Workers.Process
                 {
                     FileName = this._CipherscanPath,
                     Arguments = $"--no-tolerance -j --curves -servername {workerInformation.Hostname} {workerInformation.IPAddress}:443",
-                    UseShellExecute = true,
+                    UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     CreateNoWindow = true,
@@ -44,20 +44,16 @@ namespace SecureGovernment.Domain.Workers.Process
 
             };
 
-            process.OutputDataReceived += new DataReceivedEventHandler(OutputHandler);
-            process.BeginOutputReadLine();
-
+            process.Start();
+            string output = process.StandardOutput.ReadToEnd();
+            string err = process.StandardError.ReadToEnd();
+            
             // 3 minute timeout
             process.WaitForExit(180000);
 
-            previousResults.Add(_Result);
+            previousResults.Add(JsonConvert.DeserializeObject<CipherscanResult>(output));
             return previousResults;
 
-        }
-
-        private void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
-        {
-            _Result = JsonConvert.DeserializeObject<CipherscanResult>(outLine.Data);
         }
     }
 }
