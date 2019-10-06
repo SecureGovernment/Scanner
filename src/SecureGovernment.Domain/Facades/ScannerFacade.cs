@@ -1,5 +1,6 @@
 ﻿using DnsClient;
 using SecureGovernment.Domain.Interfaces.Facades;
+using SecureGovernment.Domain.Interfaces.Infastructure;
 using SecureGovernment.Domain.Models;
 using SecureGovernment.Domain.Models.DnsRecords.Results;
 using SecureGovernment.Domain.Workers;
@@ -13,6 +14,7 @@ namespace SecureGovernment.Domain.Facades
     public class ScannerFacade : IScannerFacade
     {
         public ILookupClient LookupClient { get; set; }
+        public ISettings Settings { get; set; }
 
         public WorkerInformation ConnectToTarget(string url)
         {
@@ -33,7 +35,8 @@ namespace SecureGovernment.Domain.Facades
         {
             var baseWorker = new BaseWorker();
             var mxWorker = new MxWorker(baseWorker, this.LookupClient);
-            var caaWorker = new CaaWorker(mxWorker, this.LookupClient);
+            var dkimWorker = new DkimWorker(mxWorker, this.LookupClient, this.Settings);
+            var caaWorker = new CaaWorker(dkimWorker, this.LookupClient);
             var spfWorker = new SpfWorker(caaWorker, this.LookupClient);
             var dnssecWorker = new DnssecWorker(spfWorker, this.LookupClient);
             var dmarcWorker = new DmarcWorker(dnssecWorker, this.LookupClient);

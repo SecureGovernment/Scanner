@@ -27,7 +27,8 @@ namespace SecureGovernment.Domain.DnsResponse
             {
                 IssueCas = caaIssue,
                 IssueWildCas = caaIssuesWild,
-                Iodef = caaIodef
+                Iodef = caaIodef,
+                Records = caa.Select(x => x.ToString()).ToList()
             };
         }
 
