@@ -15,6 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SecureGovernment.Api.Controllers;
+using SecureGovernment.Domain.Infastructure.Settings;
+using SecureGovernment.Domain.Interfaces.Infastructure;
 
 namespace SecureGovernment.Api
 {
@@ -36,9 +38,14 @@ namespace SecureGovernment.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
+
+            var settings = new Settings();
+            this.Configuration.Bind(settings);
+
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly(), Assembly.Load("SecureGovernment.Domain"))
                    .AsImplementedInterfaces().PropertiesAutowired();
             builder.RegisterType<ScanController>().PropertiesAutowired();
+            builder.RegisterInstance(settings).As<ISettings>().SingleInstance();
             builder.RegisterInstance(new LookupClient(IPAddress.Parse("8.8.8.8"), 53)).As<ILookupClient>();
 
         }
