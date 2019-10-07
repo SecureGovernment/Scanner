@@ -20,10 +20,10 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
         public void Test_OcspWorker_Scan_FirstValidOcspResponse()
         {
             // Arrange
-            var certificate = CreationHelper.CreateCertificate();
-            var bcCertificate = CreationHelper.CreateBCCertificate();
-            var issuer = CreationHelper.CreateIntermediate();
-            var bcIssuer = CreationHelper.CreateBCIntermediate();
+            var certificate = CreationHelpers.CreateCertificate();
+            var bcCertificate = CreationHelpers.CreateBCCertificate();
+            var issuer = CreationHelpers.CreateIntermediate();
+            var bcIssuer = CreationHelpers.CreateBCIntermediate();
             var uri = new Uri("https://google.com");
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(uri);
             var ocspResponse = new OcspResponse() { Status = 0 };
@@ -55,10 +55,10 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
         public void Test_OcspWorker_Scan_OneInvalidThenValidOcspResponse()
         {
             // Arrange
-            var certificate = CreationHelper.CreateCertificate();
-            var bcCertificate = CreationHelper.CreateBCCertificate();
-            var issuer = CreationHelper.CreateIntermediate();
-            var bcIssuer = CreationHelper.CreateBCIntermediate();
+            var certificate = CreationHelpers.CreateCertificate();
+            var bcCertificate = CreationHelpers.CreateBCCertificate();
+            var issuer = CreationHelpers.CreateIntermediate();
+            var bcIssuer = CreationHelpers.CreateBCIntermediate();
             var uri = new Uri("https://google.com");
             var bingUri = new Uri("https://bing.com");
             HttpWebRequest bingWebRequest = (HttpWebRequest)WebRequest.Create(bingUri);
@@ -94,10 +94,10 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
         public void Test_OcspWorker_Scan_NoValidOcspResponses()
         {
             // Arrange
-            var certificate = CreationHelper.CreateCertificate();
-            var bcCertificate = CreationHelper.CreateBCCertificate();
-            var issuer = CreationHelper.CreateIntermediate();
-            var bcIssuer = CreationHelper.CreateBCIntermediate();
+            var certificate = CreationHelpers.CreateCertificate();
+            var bcCertificate = CreationHelpers.CreateBCCertificate();
+            var issuer = CreationHelpers.CreateIntermediate();
+            var bcIssuer = CreationHelpers.CreateBCIntermediate();
             var uri = new Uri("https://google.com");
             var bingUri = new Uri("https://bing.com");
             HttpWebRequest bingWebRequest = (HttpWebRequest)WebRequest.Create(bingUri);
@@ -132,10 +132,10 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
         public void Test_OcspWorker_Scan_NoUris()
         {
             // Arrange
-            var certificate = CreationHelper.CreateCertificate();
-            var bcCertificate = CreationHelper.CreateBCCertificate();
-            var issuer = CreationHelper.CreateIntermediate();
-            var bcIssuer = CreationHelper.CreateBCIntermediate();
+            var certificate = CreationHelpers.CreateCertificate();
+            var bcCertificate = CreationHelpers.CreateBCCertificate();
+            var issuer = CreationHelpers.CreateIntermediate();
+            var bcIssuer = CreationHelpers.CreateBCIntermediate();
 
             var workerInformation = MockWorkerInformation(hostname: "google.com", certificate: certificate, issuer: issuer);
             var ocsp = MockOcsp(certificate: bcCertificate, issuer: bcIssuer, ocspUris: new Uri[0]);

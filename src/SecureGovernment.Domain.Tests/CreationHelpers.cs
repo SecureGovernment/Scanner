@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SecureGovernment.Domain.Tests
 {
-    public static class CreationHelper
+    public static class CreationHelpers
     {
         public static X509Certificate2 CreateCertificate()
         {

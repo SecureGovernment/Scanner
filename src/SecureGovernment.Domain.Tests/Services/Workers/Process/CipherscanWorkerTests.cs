@@ -20,8 +20,8 @@ namespace SecureGovernment.Domain.Tests.Services.Workers.Process
         public void Test_CipherscanWorker_Scan_ExecutableDoesntExist()
         {
             // Arrange
-            var certificate = CreationHelper.CreateCertificate();
-            var issuer = CreationHelper.CreateIntermediate();
+            var certificate = CreationHelpers.CreateCertificate();
+            var issuer = CreationHelpers.CreateIntermediate();
             var uri = new Uri("https://google.com");
 
             var workerInformation = MockWorkerInformation(hostname: "google.com", certificate: certificate, issuer: issuer);

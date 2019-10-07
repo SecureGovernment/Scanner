@@ -31,7 +31,7 @@ namespace SecureGovernment.Domain.Workers.Dns
             {
                 var queryType = QueryType.TXT;
                 var dnsReponse = await _LookupClient.QueryAsync($"{selector}.{workerInformation.Hostname}", queryType);
-                if (!dnsReponse.AllRecords.TxtRecords().Any())
+                if (!dnsReponse.Answers.TxtRecords().Any())
                 {
                     queryType = QueryType.CNAME;
                     dnsReponse = await _LookupClient.QueryAsync($"{selector}.{workerInformation.Hostname}", queryType);
