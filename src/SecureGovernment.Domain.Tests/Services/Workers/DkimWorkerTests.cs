@@ -67,7 +67,7 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
             var dnsResponse = new Mock<IDnsQueryResponse>();
             dnsResponse.Setup(x => x.Answers).Returns(dnsRecords);
 
-            lookupClientMock.Setup(x => x.QueryAsync(hostnameWithSelector, QueryType.TXT, QueryClass.IN, default)).Returns(Task.FromResult(dnsResponse.Object));
+            lookupClientMock.Setup(x => x.QueryAsync(hostnameWithSelector, QueryType.TXT, QueryClass.IN, null, default)).Returns(Task.FromResult(dnsResponse.Object));
 
             var previousWorkerMock = MockPreviousWorker(workerInformation);
             var worker = new DkimWorker(previousWorkerMock.Object, lookupClientMock.Object, settingsMock.Object);

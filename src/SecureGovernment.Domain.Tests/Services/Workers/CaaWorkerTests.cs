@@ -26,7 +26,7 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
             dnsResponse.Setup(x => x.Answers).Returns(new List<DnsResourceRecord>());
 
             var lookupClientMock = new Mock<ILookupClient>(MockBehavior.Strict);
-            lookupClientMock.Setup(x => x.QueryAsync(workerInformation.Hostname, QueryType.CAA, QueryClass.IN, default)).Returns(Task.FromResult(dnsResponse.Object));
+            lookupClientMock.Setup(x => x.QueryAsync(workerInformation.Hostname, QueryType.CAA, QueryClass.IN, null, default)).Returns(Task.FromResult(dnsResponse.Object));
             var previousWorkerMock = new Mock<IAsyncWorker>(MockBehavior.Strict);
             previousWorkerMock.Setup(x => x.Scan(workerInformation)).Returns(Task.FromResult(new List<ScanResult>()));
 
@@ -64,7 +64,7 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
             dnsResponse.Setup(x => x.Answers).Returns(dnsRecords);
 
             var lookupClientMock = new Mock<ILookupClient>(MockBehavior.Strict);
-            lookupClientMock.Setup(x => x.QueryAsync(workerInformation.Hostname, QueryType.CAA, QueryClass.IN, default)).Returns(Task.FromResult(dnsResponse.Object));
+            lookupClientMock.Setup(x => x.QueryAsync(workerInformation.Hostname, QueryType.CAA, QueryClass.IN, null, default)).Returns(Task.FromResult(dnsResponse.Object));
             var previousWorkerMock = new Mock<IAsyncWorker>(MockBehavior.Strict);
             previousWorkerMock.Setup(x => x.Scan(workerInformation)).Returns(Task.FromResult(new List<ScanResult>()));
 
