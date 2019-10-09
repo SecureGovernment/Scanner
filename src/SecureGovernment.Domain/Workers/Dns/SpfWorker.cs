@@ -20,8 +20,9 @@ namespace SecureGovernment.Domain.Workers.Dns
 
         public async Task<List<ScanResult>> Scan(WorkerInformation workerInformation)
         {
-            var dnsReponse = await _LookupClient.QueryAsync(workerInformation.Hostname, QueryType.TXT);
-            var spf = new SpfResponse(dnsReponse);
+            var txtDnsReponse = await _LookupClient.QueryAsync(workerInformation.Hostname, QueryType.TXT);
+            var spfDnsResponse = await _LookupClient.QueryAsync(workerInformation.Hostname, QueryType.SPF);
+            var spf = new SpfResponse(txtDnsReponse, spfDnsResponse);
             var previousResults = await this._PreviousWorker.Scan(workerInformation);
             previousResults.Add(spf.ParseReponse());
 
