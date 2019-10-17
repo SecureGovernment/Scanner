@@ -1,34 +1,25 @@
-﻿using Autofac;
-using DnsClient;
-using Serilog;
 using System;
-using System.Net;
-using System.Reflection;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace SecureGovernment
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            var logConfiguration = new LoggerConfiguration();
-            var logger = logConfiguration.CreateLogger();
-            AppDomain.CurrentDomain.ProcessExit += (s, e) => Log.CloseAndFlush();
-
-            var builder = new ContainerBuilder();
-
-            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly(), Assembly.Load("SecureGovernment.Domain"))
-                   .AsImplementedInterfaces().PropertiesAutowired();
-            builder.RegisterInstance(new LookupClient(IPAddress.Parse("8.8.8.8"), 53)).As<ILookupClient>();
-            builder.RegisterInstance(logger).As<ILogger>();
-
-            var container = builder.Build();
-
-            using (var scope = container.BeginLifetimeScope())
-            {
-                var app = scope.Resolve<IApplication>();
-                app.Run(args);
-            }
+            BuildWebHost(args).Run();
         }
+
+        public static IWebHost BuildWebHost(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>()
+                .Build();
     }
 }

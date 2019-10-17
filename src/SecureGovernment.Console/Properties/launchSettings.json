@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SecureGovernment": {
+      "commandName": "Project",
+      "commandLineArgs": "scan"
+    }
+  }
+}
