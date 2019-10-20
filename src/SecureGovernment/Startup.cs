@@ -1,3 +1,5 @@
+using Autofac;
+using DnsClient;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -6,11 +8,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SecureGovernment.Controllers;
+using SecureGovernment.Domain.Infastructure.Settings;
+using SecureGovernment.Domain.Interfaces.Infastructure;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.NetworkInformation;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
@@ -28,8 +35,24 @@ namespace SecureGovernment
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddOptions();
+            services.AddControllers()
+                .AddNewtonsoftJson().AddControllersAsServices();
             services.AddSpaStaticFiles(options => options.RootPath = "client-app/dist");
+        }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+
+            var settings = new Settings();
+            this.Configuration.Bind(settings);
+
+            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly(), Assembly.Load("SecureGovernment.Domain"))
+                   .AsImplementedInterfaces().PropertiesAutowired();
+            builder.RegisterType<ScanController>().PropertiesAutowired();
+            builder.RegisterInstance(settings).As<ISettings>().SingleInstance();
+            builder.RegisterInstance(new LookupClient(IPAddress.Parse("8.8.8.8"), 53)).As<ILookupClient>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
