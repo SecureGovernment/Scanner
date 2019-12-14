@@ -13,32 +13,16 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-
-- task: Bash@3
-  inputs:
-    targetType: 'inline'
-    script: 'dotnet tool install --global dotnet-sonarscanner'
-    noProfile: false
-    noRc: false
-  displayName: 'Installing SonarQube'
 - task: Bash@3
   inputs:
     targetType: 'inline'
     script: |
-      source ~/.bashrc
+      dotnet tool install --global dotnet-sonarscanner
       dotnet-sonarscanner begin /k:"SecureGovernment_Scanner" /o:"securegovernment" /d:sonar.login="$(sonar-login)"
+      dotnet build src/SecureGovernment.sln --configuration $(buildConfiguration)
+      dotnet test src/SecureGovernment.Domain.Tests/SecureGovernment.Domain.Tests.csproj --configuration $(buildConfiguration)
+      dotnet-sonarscanner end /d:sonar.login="$(sonar-login)
     noProfile: false
     noRc: false
-  displayName: 'Begin SonarQube'
-- script: dotnet build src/SecureGovernment.sln --configuration $(buildConfiguration)
-  displayName: 'Building solution'
-- script: dotnet test src/SecureGovernment.Domain.Tests/SecureGovernment.Domain.Tests.csproj --configuration $(buildConfiguration)
-  displayName: "Running tests for SecureGovernment.Domain.Tests project"
-- task: Bash@3
-  inputs:
-    targetType: 'inline'
-    script: 'dotnet-sonarscanner end /d:sonar.login="$(sonar-login)"'
-    noProfile: false
-    noRc: false
-  displayName: 'Finish SonarQube'
+  displayName: 'Running build script'
 
