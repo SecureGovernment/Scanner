@@ -3,9 +3,7 @@ using SecureGovernment.Domain.DnsResponse;
 using SecureGovernment.Domain.Interfaces;
 using SecureGovernment.Domain.Models;
 using SecureGovernment.Domain.Models.DnsRecords.Results;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SecureGovernment.Domain.Workers.Dns

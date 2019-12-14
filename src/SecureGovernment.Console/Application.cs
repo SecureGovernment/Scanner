@@ -1,6 +1,5 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
 using SecureGovernment.Domain.Interfaces.Facades;
-using SecureGovernment.Domain.Interfaces.Services;
 using SecureGovernment.Domain.Models.DnsRecords.Results;
 using Serilog;
 using System;
@@ -39,7 +38,6 @@ namespace SecureGovernment
                 {
                     var result = ScannerFacade.ScanDns(new WorkerInformation() { Hostname = "whitehouse.gov" });
                     result.Wait();
-                    var dnsResult = result.Result;
                 });
             });
 

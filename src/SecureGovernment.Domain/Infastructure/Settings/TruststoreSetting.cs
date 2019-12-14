@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SecureGovernment.Domain.Infastructure.Settings
+﻿namespace SecureGovernment.Domain.Infastructure.Settings
 {
     public class TruststoreSetting
     {
