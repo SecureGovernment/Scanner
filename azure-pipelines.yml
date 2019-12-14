@@ -25,7 +25,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      source ~/.bash_profile
+      source ~/.bashrc
       dotnet-sonarscanner begin /k:"SecureGovernment_Scanner" /o:"securegovernment" /d:sonar.login="$(sonar-login)"
     noProfile: false
     noRc: false
