@@ -15,12 +15,12 @@ variables:
 steps:
 - script: dotnet tool install --global dotnet-sonarscanner
   displayName: 'Installing SonarQube'
-- script: dotnet sonarscanner begin /k:"SecureGovernment_Scanner" /o:"securegovernment" /d:sonar.login="$(sonar-login)"
+- script: dotnet-sonarscanner begin /k:"SecureGovernment_Scanner" /o:"securegovernment" /d:sonar.login="$(sonar-login)"
   displayName: 'Begin SonarQube'
 - script: dotnet build src/SecureGovernment.sln --configuration $(buildConfiguration)
   displayName: 'Building solution'
 - script: dotnet test src/SecureGovernment.Domain.Tests/SecureGovernment.Domain.Tests.csproj --configuration $(buildConfiguration)
   displayName: "Running tests for SecureGovernment.Domain.Tests project"
-- script: dotnet sonarscanner end /d:sonar.login="$(sonar-login)" 
+- script: dotnet-sonarscanner end /d:sonar.login="$(sonar-login)" 
   displayName: 'Finish SonarQube'
 
