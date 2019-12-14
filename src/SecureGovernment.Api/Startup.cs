@@ -1,22 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Threading.Tasks;
 using Autofac;
 using DnsClient;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using SecureGovernment.Api.Controllers;
 using SecureGovernment.Domain.Infastructure.Settings;
 using SecureGovernment.Domain.Interfaces.Infastructure;
+using System.Net;
+using System.Reflection;
 
 namespace SecureGovernment.Api
 {

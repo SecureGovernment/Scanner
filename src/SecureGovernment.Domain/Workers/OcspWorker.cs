@@ -43,7 +43,13 @@ namespace SecureGovernment.Domain.Workers
                     if (response != null)
                         break;
                 }
-                catch { response.Status = OcspRevocationStatus.Error; } //TODO: Log error
+                catch {
+                    //TODO: Log error
+                    if (response == null)
+                        response = new OcspResponse();
+
+                    response.Status = OcspRevocationStatus.Error; 
+                }
             }
 
             previousResults.Add(response);
