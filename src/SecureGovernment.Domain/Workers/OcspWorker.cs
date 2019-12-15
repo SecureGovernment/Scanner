@@ -5,6 +5,7 @@ using SecureGovernment.Domain.Interfaces;
 using SecureGovernment.Domain.Models;
 using SecureGovernment.Domain.Models.DnsRecords.Results;
 using SecureGovernment.Domain.Models.Ocsp;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -43,8 +44,8 @@ namespace SecureGovernment.Domain.Workers
                     if (response != null)
                         break;
                 }
-                catch {
-                    //TODO: Log error
+                catch(Exception ex) {
+                    Log.Error(ex, $"Cannot connect to ocsp server for {uri}.");
                     if (response == null)
                         response = new OcspResponse();
 

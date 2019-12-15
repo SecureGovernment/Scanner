@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Serilog;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -34,7 +35,9 @@ namespace SecureGovernment.Domain.Models
                     var certificate = new X509Certificate2(certificateFileTextBytes);
                     certificates.Add(certificate);
                 }
-                catch { } //TODO: Log error
+                catch {
+                    Log.Warning($"Cannot parse certificate {text}.");
+                }
             }
 
             return certificates;
