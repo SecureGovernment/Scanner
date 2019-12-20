@@ -22,23 +22,30 @@ namespace SecureGovernment.Domain.Models.DnsReponse
             foreach (var response in _Reponse)
             {
                 if(response.QueryType == QueryType.TXT)
-                {
-                    var txtRecords = response.Reponse.Answers.TxtRecords().ToList();
-                    var dkimRecordsForSelector = txtRecords.SelectMany(x => x.Text).Where(x => x.ToLower().Contains("dkim")).ToList();
-                    if(dkimRecordsForSelector.Any())
-                        dkimRecords.Add((response.Selector, response.QueryType, dkimRecordsForSelector));
-                } else
-                {
-                    var cnameRecords = response.Reponse.Answers.CnameRecords().Select(x => x.CanonicalName.Value).ToList();
-                    if(cnameRecords.Any())
-                        dkimRecords.Add((response.Selector, response.QueryType, cnameRecords));
-                }
+                    AddTxtDkimRecords(dkimRecords, response);
+                else
+                    AddCnameDkimRecords(dkimRecords, response);
             }
 
             return new ParsedDkimResponse()
             {
                 DkimRecords = dkimRecords
             };
+        }
+
+        private static void AddCnameDkimRecords(List<(string, QueryType, List<string>)> dkimRecords, (string Selector, IDnsQueryResponse Reponse, QueryType QueryType) response)
+        {
+            var cnameRecords = response.Reponse.Answers.CnameRecords().Select(x => x.CanonicalName.Value).ToList();
+            if (cnameRecords.Any())
+                dkimRecords.Add((response.Selector, response.QueryType, cnameRecords));
+        }
+
+        private static void AddTxtDkimRecords(List<(string, QueryType, List<string>)> dkimRecords, (string Selector, IDnsQueryResponse Reponse, QueryType QueryType) response)
+        {
+            var txtRecords = response.Reponse.Answers.TxtRecords().ToList();
+            var dkimRecordsForSelector = txtRecords.SelectMany(x => x.Text).Where(x => x.ToLower().Contains("dkim")).ToList();
+            if (dkimRecordsForSelector.Any())
+                dkimRecords.Add((response.Selector, response.QueryType, dkimRecordsForSelector));
         }
     }
 }
