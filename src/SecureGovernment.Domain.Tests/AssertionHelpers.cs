@@ -44,10 +44,10 @@ namespace SecureGovernment.Domain.Tests
         {
             Assert.IsInstanceOfType(scanResult, typeof(ParsedMxResponse));
 
-            var spfReponse = scanResult as ParsedMxResponse;
+            var mxReponse = scanResult as ParsedMxResponse;
 
-            CollectionAssert.AreEqual(records, spfReponse.Records);
-            Assert.AreEqual(hasMxRecords, spfReponse.HasMxRecords);
+            CollectionAssert.AreEqual(records, mxReponse.Records);
+            Assert.AreEqual(hasMxRecords, mxReponse.HasMxRecords);
         }
 
         public static void AssertPreviousScanResults(List<ScanResult> scanResults)
