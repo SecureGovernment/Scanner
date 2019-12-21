@@ -13,8 +13,6 @@ namespace SecureGovernment.Domain.DnsResponse
             this._Reponse = dnsReponse;
         }
 
-        public ILookupClient LookupClient { get; set; }
-
         public ParsedSpfResponse ParseReponse()
         {
             var txtRecords = this._Reponse.Answers.TxtRecords().ToList();
