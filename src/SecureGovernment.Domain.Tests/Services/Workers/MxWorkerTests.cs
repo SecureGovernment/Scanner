@@ -40,7 +40,7 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
             var records = rawMxRecords.Result;
             Assert.AreEqual(3, records.Count);
             AssertPreviousScanResults(new[] { records[0], records[1] }.ToList());
-            AssertMxReponse(records[2], new List<string>(), false);
+            AssertMxResponse(records[2], new List<string>(), false);
         }
 
         [TestMethod]
@@ -69,7 +69,7 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
             var records = rawMxRecords.Result;
             Assert.AreEqual(3, records.Count);
             AssertPreviousScanResults(new[] { records[0], records[1] }.ToList());
-            AssertMxReponse(records[2], new List<string>() { "google.com." }, true);
+            AssertMxResponse(records[2], new List<string>() { "google.com." }, true);
         }
     }
 }

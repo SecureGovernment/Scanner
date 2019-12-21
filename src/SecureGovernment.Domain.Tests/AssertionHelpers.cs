@@ -28,7 +28,7 @@ namespace SecureGovernment.Domain.Tests
             Assert.AreEqual(hasDkimRecords, dkimReponse.HasDkim);
         }
 
-        public static void AssertSpfReponse(ScanResult scanResult, List<string> records, bool hasSpfRecords)
+        public static void AssertSpfResponse(ScanResult scanResult, List<string> records, bool hasSpfRecords)
         {
             Assert.IsInstanceOfType(scanResult, typeof(ParsedSpfResponse));
 
@@ -40,7 +40,7 @@ namespace SecureGovernment.Domain.Tests
             Assert.IsNull(spfReponse.OldSpfRecords);
         }
 
-        public static void AssertMxReponse(ScanResult scanResult, List<string> records, bool hasMxRecords)
+        public static void AssertMxResponse(ScanResult scanResult, List<string> records, bool hasMxRecords)
         {
             Assert.IsInstanceOfType(scanResult, typeof(ParsedMxResponse));
 
@@ -50,12 +50,22 @@ namespace SecureGovernment.Domain.Tests
             Assert.AreEqual(hasMxRecords, mxReponse.HasMxRecords);
         }
 
+        public static void AssertDmarcResponse(ScanResult scanResult, List<string> records, bool hasDmarcRecords)
+        {
+            Assert.IsInstanceOfType(scanResult, typeof(ParsedDmarcResponse));
+
+            var dmarcReponse = scanResult as ParsedDmarcResponse;
+
+            CollectionAssert.AreEqual(records, dmarcReponse.Records);
+            Assert.AreEqual(hasDmarcRecords, dmarcReponse.HasDmarcRecords);
+        }
+
         public static void AssertPreviousScanResults(List<ScanResult> scanResults)
         {
             Assert.AreEqual(2, scanResults.Count);
 
-            AssertSpfReponse(scanResults[0], new[] { "v=spf -all" }.ToList(), true);
-            AssertMxReponse(scanResults[1], new[] { "aspmx.l.google.com.", "alt1.aspmx.l.google.com.", "alt2.aspmx.l.google.com." }.ToList(), true);
+            AssertSpfResponse(scanResults[0], new[] { "v=spf -all" }.ToList(), true);
+            AssertMxResponse(scanResults[1], new[] { "aspmx.l.google.com.", "alt1.aspmx.l.google.com.", "alt2.aspmx.l.google.com." }.ToList(), true);
         }
     }
 }
