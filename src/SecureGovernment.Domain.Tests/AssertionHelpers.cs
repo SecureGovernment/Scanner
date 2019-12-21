@@ -54,10 +54,20 @@ namespace SecureGovernment.Domain.Tests
         {
             Assert.IsInstanceOfType(scanResult, typeof(ParsedDmarcResponse));
 
-            var dmarcReponse = scanResult as ParsedDmarcResponse;
+            var dmarcResponse = scanResult as ParsedDmarcResponse;
 
-            CollectionAssert.AreEqual(records, dmarcReponse.Records);
-            Assert.AreEqual(hasDmarcRecords, dmarcReponse.HasDmarcRecords);
+            CollectionAssert.AreEqual(records, dmarcResponse.Records);
+            Assert.AreEqual(hasDmarcRecords, dmarcResponse.HasDmarcRecords);
+        }
+
+        public static void AssertDnssecResponse(ScanResult scanResult, List<string> records, bool hasDnssecRecords)
+        {
+            Assert.IsInstanceOfType(scanResult, typeof(ParsedDnssecResponse));
+
+            var dnssecResponse = scanResult as ParsedDnssecResponse;
+
+            CollectionAssert.AreEqual(records, dnssecResponse.Records);
+            Assert.AreEqual(hasDnssecRecords, dnssecResponse.HasDnssec);
         }
 
         public static void AssertPreviousScanResults(List<ScanResult> scanResults)
