@@ -25,4 +25,13 @@
     <ProjectReference Include="..\SecureGovernment.Domain\SecureGovernment.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Data\InvalidOCSP.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\ValidOCSP.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

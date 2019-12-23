@@ -25,15 +25,13 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
                 ("_dmarc.google.com", QueryType.TXT, dnsResponse.Object)
             });
             var previousWorker = MockPreviousWorker(workerInformation);
-
-            //Act
             var dmarcWorker = new DmarcWorker(previousWorker.Object, lookupClient.Object);
 
-            //Assert
+            //Act
             var rawDmarcRecords = dmarcWorker.Scan(workerInformation);
             rawDmarcRecords.Wait();
 
-            // Assert
+            //Assert
             var records = rawDmarcRecords.Result;
             Assert.AreEqual(3, records.Count);
             AssertPreviousScanResults(new[] { records[0], records[1] }.ToList());
@@ -56,15 +54,13 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
                 ("_dmarc.google.com", QueryType.TXT, dnsResponse.Object)
             });
             var previousWorker = MockPreviousWorker(workerInformation);
-
-            //Act
             var dmarcWorker = new DmarcWorker(previousWorker.Object, lookupClient.Object);
 
-            //Assert
+            //Act
             var rawDmarcRecords = dmarcWorker.Scan(workerInformation);
             rawDmarcRecords.Wait();
 
-            // Assert
+            //Assert
             var records = rawDmarcRecords.Result;
             Assert.AreEqual(3, records.Count);
             AssertPreviousScanResults(new[] { records[0], records[1] }.ToList());
@@ -87,15 +83,13 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
                 ("_dmarc.google.com", QueryType.TXT, dnsResponse.Object)
             });
             var previousWorker = MockPreviousWorker(workerInformation);
-
-            //Act
             var dmarcWorker = new DmarcWorker(previousWorker.Object, lookupClient.Object);
 
-            //Assert
+            //Act
             var rawDmarcRecords = dmarcWorker.Scan(workerInformation);
             rawDmarcRecords.Wait();
 
-            // Assert
+            //Assert
             var records = rawDmarcRecords.Result;
             Assert.AreEqual(3, records.Count);
             AssertPreviousScanResults(new[] { records[0], records[1] }.ToList());
