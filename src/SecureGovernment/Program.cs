@@ -7,9 +7,9 @@ using System.Reflection;
 
 namespace SecureGovernment
 {
-    class Program
+    public static class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             var logConfiguration = new LoggerConfiguration();
             var logger = logConfiguration.CreateLogger();

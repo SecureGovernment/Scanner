@@ -4,10 +4,8 @@ using SecureGovernment.Domain.Interfaces.Infastructure;
 using SecureGovernment.Domain.Models;
 using SecureGovernment.Domain.Models.DnsRecords.Results;
 using SecureGovernment.Domain.Models.DnsReponse;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SecureGovernment.Domain.Workers.Dns

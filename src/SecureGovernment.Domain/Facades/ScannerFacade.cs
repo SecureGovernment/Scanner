@@ -5,6 +5,7 @@ using SecureGovernment.Domain.Models;
 using SecureGovernment.Domain.Models.DnsRecords.Results;
 using SecureGovernment.Domain.Workers;
 using SecureGovernment.Domain.Workers.Dns;
+using Serilog;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace SecureGovernment.Domain.Facades
     {
         public ILookupClient LookupClient { get; set; }
         public ISettings Settings { get; set; }
+        public ILogger Logger { get; set; }
 
         public WorkerInformation ConnectToTarget(string url)
         {
@@ -26,7 +28,9 @@ namespace SecureGovernment.Domain.Facades
                 var info = connection.LoadCertificates();
                 workerInformation.Certificate = info.Certificate;
                 workerInformation.Chain = info.Chain;
-            } catch (SocketException) { } //TODO: Log failure
+            } catch (SocketException ex) {
+                Logger.Error(ex, $"Cannot connect to {url}.");
+            }
 
             return workerInformation;
         }

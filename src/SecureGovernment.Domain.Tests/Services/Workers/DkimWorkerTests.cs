@@ -83,5 +83,44 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
             AssertPreviousScanResults(new[] { records[0], records[1] }.ToList());
             AssertDkimResponse(records[2], null, new[] { ("selector1._domainkey", QueryType.TXT, txtRecords.ToList()) }.ToList(), true);
         }
+
+        [TestMethod]
+        public void Test_DkimWorker_OneSelectors_Cname()
+        {
+            // Arrange
+            var workerInformation = MockWorkerInformation(hostname: "google.com");
+            var hostnameWithSelector = "selector1._domainkey.google.com";
+            var dnsString = DnsString.FromResponseQueryString(hostnameWithSelector);
+
+            var settingsMock = Utils.CreateMock<ISettings>();
+            settingsMock.Setup(x => x.DkimSelectors).Returns(new List<string>() { "selector1._domainkey" });
+
+            var lookupClientMock = Utils.CreateMock<ILookupClient>();
+
+            var resourceRecord = new ResourceRecordInfo(dnsString, ResourceRecordType.CNAME, QueryClass.IN, 0, 0);
+
+            var dnsRecords = new List<CNameRecord>() {
+                new CNameRecord(resourceRecord, dnsString)
+            };
+
+            var dnsResponse = new Mock<IDnsQueryResponse>();
+            dnsResponse.Setup(x => x.Answers).Returns(dnsRecords);
+
+            lookupClientMock.Setup(x => x.QueryAsync(hostnameWithSelector, It.IsAny<QueryType>(), QueryClass.IN, null, default)).Returns(Task.FromResult(dnsResponse.Object));
+
+            var previousWorkerMock = MockPreviousWorker(workerInformation);
+            var worker = new DkimWorker(previousWorkerMock.Object, lookupClientMock.Object, settingsMock.Object);
+
+            // Act
+            var rawRecords = worker.Scan(workerInformation);
+            rawRecords.Wait();
+
+            // Assert
+            var records = rawRecords.Result;
+            Assert.AreEqual(3, records.Count);
+
+            AssertPreviousScanResults(new[] { records[0], records[1] }.ToList());
+            AssertDkimResponse(records[2], null, new[] { ("selector1._domainkey", QueryType.CNAME, new[] { dnsString.Value }.ToList())}.ToList(), true);
+        }
     }
 }

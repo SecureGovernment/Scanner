@@ -5,6 +5,7 @@ using SecureGovernment.Domain.Interfaces;
 using SecureGovernment.Domain.Models;
 using SecureGovernment.Domain.Models.DnsRecords.Results;
 using SecureGovernment.Domain.Models.Ocsp;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,18 +34,7 @@ namespace SecureGovernment.Domain.Workers
             var ocsp = CreateOcsp(cert, issuer);
             var uris = ocsp.GetOcspUris();
             OcspResponse response = new OcspResponse() { Status = OcspRevocationStatus.Unknown };
-
-            foreach (var uri in uris)
-            {
-                try
-                {
-                    HttpWebRequest request = CreateOcspRequest(ocsp, uri);
-                    response = await SendOcspRequest(request);
-                    if (response != null)
-                        break;
-                }
-                catch { response.Status = OcspRevocationStatus.Error; } //TODO: Log error
-            }
+            response = await SendOcspRequests(ocsp, uris, response);
 
             previousResults.Add(response);
 
@@ -113,6 +103,30 @@ namespace SecureGovernment.Domain.Workers
                 status.Status = OcspRevocationStatus.Unknown;
 
             return status;
+        }
+
+        private async Task<OcspResponse> SendOcspRequests(Ocsp ocsp, IList<Uri> uris, OcspResponse response)
+        {
+            foreach (var uri in uris)
+            {
+                try
+                {
+                    HttpWebRequest request = CreateOcspRequest(ocsp, uri);
+                    response = await SendOcspRequest(request);
+                    if (response != null)
+                        break;
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, $"Cannot connect to ocsp server for {uri}.");
+                    if (response == null)
+                        response = new OcspResponse();
+
+                    response.Status = OcspRevocationStatus.Error;
+                }
+            }
+
+            return response;
         }
 
         #endregion

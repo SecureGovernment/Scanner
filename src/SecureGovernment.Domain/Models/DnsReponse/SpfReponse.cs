@@ -16,8 +16,6 @@ namespace SecureGovernment.Domain.DnsResponse
             this._SpfReponse = spfDnsResponse;
         }
 
-        public ILookupClient LookupClient { get; set; }
-
         public ParsedSpfResponse ParseReponse()
         {
             var txtRecords = this._TxtReponse.Answers.TxtRecords().ToList();

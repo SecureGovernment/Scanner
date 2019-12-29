@@ -1,4 +1,10 @@
-﻿using Org.BouncyCastle.Security;
+﻿using DnsClient;
+using DnsClient.Protocol;
+using Org.BouncyCastle.Ocsp;
+using Org.BouncyCastle.Security;
+using System;
+using System.IO;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
@@ -116,6 +122,25 @@ EtFvGXGgbTr0FzeOLx5KPvqFKogshJSuxtN+qZDO3WQXlbbXkircmdpQ
 -----END CERTIFICATE-----");
 
             return new X509Certificate2(caBytes);
+        }
+
+        public static DnsString CreateDnsString(string hostname) => DnsString.FromResponseQueryString(hostname);
+
+        public static ResourceRecordInfo CreateResourceRecordInfo(DnsString hostname, ResourceRecordType resourceRecordType) 
+            => new ResourceRecordInfo(hostname, resourceRecordType, QueryClass.IN, 0, 0);
+
+        public static BasicOcspResp GetValidOcspResp()
+        {
+            var bytes = File.ReadAllBytes(@"Data\ValidOCSP.txt");
+            var ocspResp = new OcspResp(bytes);
+            return (BasicOcspResp)ocspResp.GetResponseObject();
+        }
+
+        public static BasicOcspResp GetInvalidOcspResp()
+        {
+            var bytes = File.ReadAllBytes(@"Data\InvalidOCSP.txt");
+            var ocspResp = new OcspResp(bytes);
+            return (BasicOcspResp)ocspResp.GetResponseObject();
         }
     }
 }
