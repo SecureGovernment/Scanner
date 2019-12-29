@@ -1,6 +1,5 @@
 ﻿using DnsClient;
 using SecureGovernment.Domain.Models.DnsReponse.Parsed;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace SecureGovernment.Domain.DnsResponse
@@ -25,8 +24,9 @@ namespace SecureGovernment.Domain.DnsResponse
             var spfRecordsFromSpf = spfRecords.SelectMany(x => x.Text).ToList();
 
             return new ParsedSpfResponse() {
-                Records = spfRecordsFromTxt,
-                OldSpfRecords = spfRecordsFromSpf
+                Records = txtRecords.Select(x => x.ToString()).Concat(spfRecords.Select(x => x.ToString())).ToList(),
+                SpfTypeSpfRecords = spfRecordsFromSpf,
+                TxtTypeSpfRecords = spfRecordsFromTxt
             };
         }
     }

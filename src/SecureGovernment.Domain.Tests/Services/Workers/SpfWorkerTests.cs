@@ -41,9 +41,10 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
             Assert.IsInstanceOfType(records.Single(), typeof(ParsedSpfResponse));
             var spfRecord = records.Single() as ParsedSpfResponse;
 
-            Assert.IsFalse(spfRecord.HasOldSpf);
+            Assert.IsFalse(spfRecord.HasSpfTypeRecords);
+            Assert.IsFalse(spfRecord.HasTxtTypeRecords);
             Assert.IsFalse(spfRecord.HasSpfRecords);
-            Assert.AreEqual(0, spfRecord.OldSpfRecords.Count);
+            Assert.AreEqual(0, spfRecord.SpfTypeSpfRecords.Count);
             Assert.AreEqual(0, spfRecord.Records.Count);
         }
 
@@ -78,9 +79,10 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
             Assert.IsInstanceOfType(records.Single(), typeof(ParsedSpfResponse));
             var spfRecord = records.Single() as ParsedSpfResponse;
 
-            Assert.IsFalse(spfRecord.HasOldSpf);
+            Assert.IsFalse(spfRecord.HasSpfTypeRecords);
+            Assert.IsFalse(spfRecord.HasSpfTypeRecords);
             Assert.IsFalse(spfRecord.HasSpfRecords);
-            Assert.AreEqual(0, spfRecord.OldSpfRecords.Count);
+            Assert.AreEqual(0, spfRecord.SpfTypeSpfRecords.Count);
             Assert.AreEqual(0, spfRecord.Records.Count);
         }
 
@@ -115,9 +117,10 @@ namespace SecureGovernment.Domain.Tests.Services.Workers
             Assert.IsInstanceOfType(records.Single(), typeof(ParsedSpfResponse));
             var spfRecord = records.Single() as ParsedSpfResponse;
 
-            Assert.IsFalse(spfRecord.HasOldSpf);
+            Assert.IsFalse(spfRecord.HasSpfTypeRecords);
+            Assert.IsFalse(spfRecord.HasSpfTypeRecords);
             Assert.IsTrue(spfRecord.HasSpfRecords);
-            Assert.AreEqual(0, spfRecord.OldSpfRecords.Count);
+            Assert.AreEqual(0, spfRecord.SpfTypeSpfRecords.Count);
             Assert.AreEqual(1, spfRecord.Records.Count);
             Assert.AreEqual(txtRecords[0], spfRecord.Records[0]);
         }

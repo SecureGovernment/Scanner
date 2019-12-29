@@ -36,8 +36,8 @@ namespace SecureGovernment.Domain.Tests
 
             CollectionAssert.AreEqual(records, spfReponse.Records);
             Assert.AreEqual(hasSpfRecords, spfReponse.HasSpfRecords);
-            Assert.IsFalse(spfReponse.HasOldSpf);
-            Assert.IsNull(spfReponse.OldSpfRecords);
+            Assert.IsFalse(spfReponse.HasSpfTypeRecords);
+            Assert.IsNull(spfReponse.SpfTypeSpfRecords);
         }
 
         public static void AssertMxResponse(ScanResult scanResult, List<string> records, bool hasMxRecords)

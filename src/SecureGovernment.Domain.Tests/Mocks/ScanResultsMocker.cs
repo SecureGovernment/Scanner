@@ -16,7 +16,7 @@ namespace SecureGovernment.Domain.Tests.Mocks
         {
             return new List<ScanResult>()
             {
-                new ParsedSpfResponse(){ Records = new[]{ "v=spf -all" }.ToList() },
+                new ParsedSpfResponse(){ TxtTypeSpfRecords = new[]{ "v=spf -all" }.ToList(), Records = new[]{ "v=spf -all" }.ToList() },
                 new ParsedMxResponse(){ Records = new[]{ "aspmx.l.google.com.", "alt1.aspmx.l.google.com.", "alt2.aspmx.l.google.com." }.ToList() }
             };
         }
