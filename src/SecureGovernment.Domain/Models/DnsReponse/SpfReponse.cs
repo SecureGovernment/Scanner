@@ -1,4 +1,5 @@
 ﻿using DnsClient;
+using DnsClient.Protocol;
 using SecureGovernment.Domain.Models.DnsReponse.Parsed;
 using System.Linq;
 
@@ -17,7 +18,7 @@ namespace SecureGovernment.Domain.DnsResponse
 
         public ParsedSpfResponse ParseReponse()
         {
-            var txtRecords = this._TxtReponse.Answers.TxtRecords().ToList();
+            var txtRecords = this._TxtReponse.Answers.Where(x => x.GetType() == typeof(TxtRecord)).OfType<TxtRecord>().ToList();
             var spfRecordsFromTxt = txtRecords.SelectMany(x => x.Text).Where(x => x.ToLower().Contains("spf")).ToList();
 
             var spfRecords = this._SpfReponse.Answers.SpfRecords().ToList();

@@ -2,9 +2,7 @@
 using DnsClient.Protocol;
 using Org.BouncyCastle.Ocsp;
 using Org.BouncyCastle.Security;
-using System;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
@@ -127,6 +125,9 @@ EtFvGXGgbTr0FzeOLx5KPvqFKogshJSuxtN+qZDO3WQXlbbXkircmdpQ
         public static DnsString CreateDnsString(string hostname) => DnsString.FromResponseQueryString(hostname);
 
         public static ResourceRecordInfo CreateResourceRecordInfo(DnsString hostname, ResourceRecordType resourceRecordType) 
+            => new ResourceRecordInfo(hostname, resourceRecordType, QueryClass.IN, 0, 0);
+
+        public static ResourceRecordInfo CreateResourceRecordInfo(string hostname, ResourceRecordType resourceRecordType)
             => new ResourceRecordInfo(hostname, resourceRecordType, QueryClass.IN, 0, 0);
 
         public static BasicOcspResp GetValidOcspResp()

@@ -19,25 +19,12 @@ namespace SecureGovernment.Domain.Tests
 
             for (int i = dkimReponse.DkimRecords.Count - 1; i >= 0; i--)
             {
-                
                 Assert.AreEqual(dkimRecords[i].Item1, dkimReponse.DkimRecords[i].Selector);
                 Assert.AreEqual(dkimRecords[i].Item2, dkimReponse.DkimRecords[i].Item2);
                 CollectionAssert.AreEqual(dkimRecords[i].Item3, dkimReponse.DkimRecords[i].Reponse);
             }
 
             Assert.AreEqual(hasDkimRecords, dkimReponse.HasDkim);
-        }
-
-        public static void AssertSpfResponse(ScanResult scanResult, List<string> records, bool hasSpfRecords)
-        {
-            Assert.IsInstanceOfType(scanResult, typeof(ParsedSpfResponse));
-
-            var spfReponse = scanResult as ParsedSpfResponse;
-
-            CollectionAssert.AreEqual(records, spfReponse.Records);
-            Assert.AreEqual(hasSpfRecords, spfReponse.HasSpfRecords);
-            Assert.IsFalse(spfReponse.HasSpfTypeRecords);
-            Assert.IsNull(spfReponse.SpfTypeSpfRecords);
         }
 
         public static void AssertMxResponse(ScanResult scanResult, List<string> records, bool hasMxRecords)
@@ -70,11 +57,26 @@ namespace SecureGovernment.Domain.Tests
             Assert.AreEqual(hasDnssecRecords, dnssecResponse.HasDnssec);
         }
 
+        public static void AssertSpfResponse(ScanResult scanResult, List<string> records, List<string> txtTypeRecords, List<string> spfTypeRecords, bool hasTxtTypeRecords, bool hasSpfTypeRecords, bool hasRecords)
+        {
+            Assert.IsInstanceOfType(scanResult, typeof(ParsedSpfResponse));
+
+            var spfResponse = scanResult as ParsedSpfResponse;
+
+            CollectionAssert.AreEqual(records, spfResponse.Records);
+            CollectionAssert.AreEqual(txtTypeRecords, spfResponse.TxtTypeSpfRecords);
+            CollectionAssert.AreEqual(spfTypeRecords, spfResponse.SpfTypeSpfRecords);
+            Assert.AreEqual(hasSpfTypeRecords, spfResponse.HasSpfTypeRecords);
+            Assert.AreEqual(hasTxtTypeRecords, spfResponse.HasTxtTypeRecords);
+            Assert.AreEqual(hasRecords, spfResponse.HasSpfRecords);
+        }
+
+
         public static void AssertPreviousScanResults(List<ScanResult> scanResults)
         {
             Assert.AreEqual(2, scanResults.Count);
 
-            AssertSpfResponse(scanResults[0], new[] { "v=spf -all" }.ToList(), true);
+            AssertDnssecResponse(scanResults[0], new[] { "DNSSEC KEY" }.ToList(), true);
             AssertMxResponse(scanResults[1], new[] { "aspmx.l.google.com.", "alt1.aspmx.l.google.com.", "alt2.aspmx.l.google.com." }.ToList(), true);
         }
     }
