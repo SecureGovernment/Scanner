@@ -3,13 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecureGovernment.Domain", "SecureGovernment.Domain\SecureGovernment.Domain.csproj", "{3C39C464-247C-4EF8-9CD2-2B85813E7D39}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecureGovernment.Domain", "SecureGovernment.Domain\SecureGovernment.Domain.csproj", "{7B1C3E18-FEB4-4AB6-9BE1-91935D3468AA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecureGovernment.Domain.Tests", "SecureGovernment.Domain.Tests\SecureGovernment.Domain.Tests.csproj", "{979D4420-0DD3-46E6-9B64-DCA24A4E2790}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecureGovernment.Domain.Tests", "SecureGovernment.Domain.Tests\SecureGovernment.Domain.Tests.csproj", "{D62884C6-933D-4FEF-B057-56090D001AAD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecureGovernment", "SecureGovernment\SecureGovernment.csproj", "{F941AE7E-563F-47D8-A980-07982566CF08}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecureGovernment.Api", "SecureGovernment.Api\SecureGovernment.Api.csproj", "{7E61B5C0-68EB-4093-B643-C51C83D23378}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecureGovernment.Api", "SecureGovernment.Api\SecureGovernment.Api.csproj", "{7E61B5C0-68EB-4093-B643-C51C83D23378}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,18 +15,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3C39C464-247C-4EF8-9CD2-2B85813E7D39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3C39C464-247C-4EF8-9CD2-2B85813E7D39}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3C39C464-247C-4EF8-9CD2-2B85813E7D39}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3C39C464-247C-4EF8-9CD2-2B85813E7D39}.Release|Any CPU.Build.0 = Release|Any CPU
-		{979D4420-0DD3-46E6-9B64-DCA24A4E2790}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{979D4420-0DD3-46E6-9B64-DCA24A4E2790}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{979D4420-0DD3-46E6-9B64-DCA24A4E2790}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{979D4420-0DD3-46E6-9B64-DCA24A4E2790}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F941AE7E-563F-47D8-A980-07982566CF08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F941AE7E-563F-47D8-A980-07982566CF08}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F941AE7E-563F-47D8-A980-07982566CF08}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F941AE7E-563F-47D8-A980-07982566CF08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B1C3E18-FEB4-4AB6-9BE1-91935D3468AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B1C3E18-FEB4-4AB6-9BE1-91935D3468AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B1C3E18-FEB4-4AB6-9BE1-91935D3468AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B1C3E18-FEB4-4AB6-9BE1-91935D3468AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D62884C6-933D-4FEF-B057-56090D001AAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D62884C6-933D-4FEF-B057-56090D001AAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D62884C6-933D-4FEF-B057-56090D001AAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D62884C6-933D-4FEF-B057-56090D001AAD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7E61B5C0-68EB-4093-B643-C51C83D23378}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7E61B5C0-68EB-4093-B643-C51C83D23378}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E61B5C0-68EB-4093-B643-C51C83D23378}.Release|Any CPU.ActiveCfg = Release|Any CPU
