@@ -16,8 +16,4 @@
     <ProjectReference Include="..\SecureGovernment.Domain\SecureGovernment.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
-
 </Project>
