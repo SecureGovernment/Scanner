@@ -25,7 +25,8 @@ namespace SecureGovernment.Domain.DnsResponse
             var spfRecordsFromSpf = spfRecords.SelectMany(x => x.Text).ToList();
 
             return new ParsedSpfResponse() {
-                Records = txtRecords.Select(x => x.ToString()).Concat(spfRecords.Select(x => x.ToString())).ToList(),
+                Records = txtRecords.Select(x => x.ToString()).Where(x => x.ToLower().Contains("spf"))
+                            .Concat(spfRecords.Select(x => x.ToString())).ToList(),
                 SpfTypeSpfRecords = spfRecordsFromSpf,
                 TxtTypeSpfRecords = spfRecordsFromTxt
             };
